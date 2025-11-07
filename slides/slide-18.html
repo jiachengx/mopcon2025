@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FFmpeg 音訊處理 Pipeline</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/themes/prism-tomorrow.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0a1929;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .blue-accent {
+            color: #2196F3;
+        }
+        .green-accent {
+            color: #4CAF50;
+        }
+        .content-area {
+            z-index: 5;
+        }
+        .circuit-line {
+            position: absolute;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+        .tech-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            z-index: 1;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 14px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+        .header-underline {
+            height: 6px;
+            width: 100px;
+            background-color: #4CAF50;
+            margin-top: 12px;
+            margin-bottom: 32px;
+        }
+        .code-container {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 20px;
+            overflow: hidden;
+            line-height: 1.6;
+        }
+        .code-highlight {
+            color: #2196F3;
+            font-weight: 600;
+        }
+        .code-comment {
+            color: #6c757d;
+        }
+        .note-item {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left: 6px solid #4CAF50;
+            padding: 14px 20px;
+            margin-bottom: 16px;
+            border-radius: 0 4px 4px 0;
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+        .note-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #4CAF50;
+            font-size: 20px;
+        }
+        .note-content {
+            font-size: 18px;
+            line-height: 1.5;
+        }
+        .result-item {
+            font-size: 18px;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container flex flex-col">
+<!-- Header -->
+<div class="px-16 pt-12 pb-4">
+<h1 class="text-5xl font-bold blue-accent">FFmpeg 音訊處理 Pipeline</h1>
+<div class="header-underline"></div>
+</div>
+<!-- Main content - Two columns -->
+<div class="flex flex-1 px-16 pb-16">
+<!-- Left column - Code -->
+<div class="w-1/2 pr-8 content-area">
+<div class="code-container h-full flex flex-col">
+<pre class="flex-1 text-gray-200">
+<span class="code-highlight"># 音量檢測</span>
+ffmpeg -i <span class="green-accent">input.wav</span> -filter:a volumedetect \
+       -f null /dev/null
+
+<span class="code-comment"># 結果: mean_volume: -28.5 dB</span>
+
+<span class="code-highlight"># 語音增強 +13dB</span>
+ffmpeg -i <span class="green-accent">input.wav</span> \
+       -filter:a "volume=13dB" \
+       <span class="green-accent">output.wav</span>
+
+<span class="code-highlight"># Ding-Dong +16dB</span>
+ffmpeg -i <span class="green-accent">dingdong.wav</span> \
+       -filter:a "volume=16dB" \
+       <span class="green-accent">dingdong_loud.wav</span>
+
+<span class="code-highlight"># 音訊合併</span>
+ffmpeg -i <span class="green-accent">dingdong.wav</span> \
+       -i <span class="green-accent">silence_0.5s.wav</span> \
+       -i <span class="green-accent">voice.wav</span> \
+       -filter_complex "concat=n=3:v=0:a=1" \
+       <span class="green-accent">final.wav</span>
+</pre>
+</div>
+</div>
+<!-- Right column - Notes -->
+<div class="w-1/2 pl-8 content-area">
+<h2 class="text-2xl font-semibold mb-6 green-accent">音訊處理關鍵技術</h2>
+<div class="note-item">
+<p class="note-title"><i class="fas fa-volume-up mr-2"></i>音量增益策略</p>
+<p class="note-content">語音檔: <strong>+13dB</strong> 提高嘈雜環境可聽度<br/>
+提示音: <strong>+16dB</strong> 引起注意力</p>
+</div>
+<div class="note-item">
+<p class="note-title"><i class="fas fa-music mr-2"></i>Ding-Dong 設計</p>
+<p class="note-content">雙音節提示音 → 0.5秒停頓 → 語音播報<br/>
+總長度: <strong>1s + 0.5s + 4~5s</strong></p>
+</div>
+<div class="note-item">
+<p class="note-title"><i class="fas fa-puzzle-piece mr-2"></i>音訊拼接技術</p>
+<p class="note-content">使用 <strong>concat</strong> 濾鏡無縫拼接三段音訊，確保播放連續流暢</p>
+</div>
+<div class="mt-8">
+<h3 class="text-xl font-medium blue-accent mb-4"><i class="fas fa-clipboard-check mr-2"></i>實測效果</h3>
+<p class="result-item"><i class="fas fa-check-circle mr-2 green-accent"></i> 70dB 嘈雜環境中清晰可聞</p>
+<p class="result-item"><i class="fas fa-check-circle mr-2 green-accent"></i> 處理速度: &lt;100ms/片段</p>
+<p class="result-item"><i class="fas fa-check-circle mr-2 green-accent"></i> 保持語音自然度，無明顯失真</p>
+</div>
+</div>
+</div>
+<!-- Decorative elements -->
+<div class="circuit-line" style="top: 120px; right: 100px; width: 180px; transform: rotate(-30deg);"></div>
+<div class="circuit-line" style="bottom: 120px; left: 80px; width: 220px; transform: rotate(15deg);"></div>
+<div class="tech-dot" style="top: 180px; left: 150px;"></div>
+<div class="tech-dot" style="bottom: 200px; right: 180px;"></div>
+<div class="tech-dot" style="top: 100px; right: 300px;"></div>
+<!-- Watermark -->
+<div class="watermark">
+        Licensed to MOPCON 2025
+    </div>
+</div>
+</body>
+</html>

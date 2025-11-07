@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>開源分享與 Q&amp;A</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0a1929;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .blue-accent {
+            color: #2196F3;
+        }
+        .green-accent {
+            color: #4CAF50;
+        }
+        .content-area {
+            z-index: 5;
+        }
+        .closing-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border-left: 6px solid;
+            transition: transform 0.2s;
+        }
+        .closing-card:hover {
+            transform: translateX(5px);
+        }
+        .opensource-card {
+            border-left-color: #2196F3;
+        }
+        .qa-card {
+            border-left-color: #FFC107;
+        }
+        .circuit-line {
+            position: absolute;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+        .tech-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            z-index: 1;
+        }
+        .big-circle {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            right: -200px;
+            bottom: -200px;
+            z-index: 0;
+        }
+        .medium-circle {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 1px solid rgba(76, 175, 80, 0.1);
+            right: -100px;
+            bottom: -100px;
+            z-index: 0;
+        }
+        .small-circle {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            right: -30px;
+            bottom: -30px;
+            z-index: 0;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 14px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+        .header-underline {
+            height: 6px;
+            width: 80px;
+            background-color: #4CAF50;
+            margin-top: 12px;
+            margin-bottom: 32px;
+        }
+        .thank-you-text {
+            font-size: 72px;
+            font-weight: 900;
+            position: absolute;
+            bottom: -20px;
+            right: 30px;
+            opacity: 0.07;
+            z-index: 0;
+            letter-spacing: 2px;
+        }
+        .qr-code-container {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 150px;
+            height: 150px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .qr-code {
+            width: 120px;
+            height: 120px;
+            border: 2px solid #2196F3;
+            border-radius: 4px;
+        }
+        .qr-text {
+            margin-top: 8px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container flex flex-col">
+<!-- Header -->
+<div class="px-16 pt-12 pb-4">
+<h1 class="text-5xl font-bold blue-accent" style="font-size: 48px;">開源分享與 Q&amp;A</h1>
+<div class="header-underline"></div>
+</div>
+<!-- Main content -->
+<div class="flex flex-1 px-16 pb-16 content-area">
+<!-- Left column -->
+<div class="w-1/2 pr-10">
+<div class="closing-card opensource-card">
+<div class="flex items-center mb-2">
+<i class="fas fa-code-branch text-3xl blue-accent mr-3"></i>
+<h2 class="text-3xl font-semibold blue-accent" style="font-size: 36px;">開源計畫</h2>
+</div>
+<p class="text-2xl mt-4" style="font-size: 28px;">我們將陸續開源以下模組與配置範例：</p>
+<ul class="mt-4 ml-8 list-disc">
+<li>
+<p class="text-2xl" style="font-size: 28px;">Worker Pool 去重防抖機制</p>
+</li>
+<li>
+<p class="text-2xl" style="font-size: 28px;">數字拆解演算法（1-9999）</p>
+</li>
+<li>
+<p class="text-2xl" style="font-size: 28px;">FFmpeg 音訊處理 pipeline</p>
+</li>
+<li>
+<p class="text-2xl" style="font-size: 28px;">MQTT + WebSocket 雙協定整合</p>
+</li>
+</ul>
+</div>
+</div>
+<!-- Right column -->
+<div class="w-1/2 pl-6">
+<div class="closing-card qa-card h-full flex flex-col">
+<div class="flex items-center mb-4">
+<i class="fas fa-question-circle text-3xl text-yellow-500 mr-3"></i>
+<h2 class="text-3xl font-semibold text-yellow-500" style="font-size: 36px;">Q&amp;A 時間</h2>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<p class="mb-5 text-2xl" style="font-size: 28px;">歡迎提問任何關於：</p>
+<ul class="ml-8 list-disc mb-8">
+<li>
+<p class="text-2xl" style="font-size: 28px;">系統架構與設計決策</p>
+</li>
+<li>
+<p class="text-2xl" style="font-size: 28px;">AI語音系統實作細節</p>
+</li>
+<li>
+<p class="text-2xl" style="font-size: 28px;">現場部署與故障排除</p>
+</li>
+<li>
+<p class="text-2xl" style="font-size: 28px;">硬體管理與整合</p>
+</li>
+</ul>
+</div>
+<div class="text-center">
+<p class="text-2xl green-accent font-medium mt-6" style="font-size: 32px;">感謝聆聽！</p>
+<p class="text-xl text-gray-300 mt-2">Together we build better healthcare solutions</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- QR Code in left bottom corner -->
+<div class="qr-code-container">
+<img alt="QR Code" class="qr-code" src="https://page.gensparksite.com/slides_images/c64ed86052d500e5cfc92b6d53d5f223.png"/>
+<p class="qr-text">簡報位置</p>
+</div>
+<!-- Decorative elements -->
+<div class="big-circle"></div>
+<div class="medium-circle"></div>
+<div class="small-circle"></div>
+<div class="circuit-line" style="top: 150px; right: 180px; width: 300px; transform: rotate(-30deg);"></div>
+<div class="circuit-line" style="bottom: 200px; left: 120px; width: 250px; transform: rotate(15deg);"></div>
+<div class="tech-dot" style="top: 200px; left: 150px;"></div>
+<div class="tech-dot" style="top: 220px; left: 350px;"></div>
+<div class="tech-dot" style="bottom: 250px; right: 180px;"></div>
+<!-- Big thank you text in background -->
+<div class="thank-you-text">THANK YOU</div>
+<!-- Watermark -->
+<div class="watermark">
+            Licensed to MOPCON 2025
+        </div>
+</div>
+</body>
+</html>

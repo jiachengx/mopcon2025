@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>關鍵技術決策回顧</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0a1929;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .blue-accent {
+            color: #2196F3;
+        }
+        .green-accent {
+            color: #4CAF50;
+        }
+        .content-area {
+            z-index: 5;
+        }
+        .list-item {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .list-icon {
+            margin-right: 16px;
+            margin-top: 6px;
+            font-size: 24px;
+        }
+        .circuit-line {
+            position: absolute;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+        .tech-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            z-index: 1;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 16px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+        .header-underline {
+            height: 5px;
+            width: 80px;
+            background-color: #4CAF50;
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 48px !important;
+            line-height: 1.2;
+        }
+        h2 {
+            font-size: 36px !important;
+            margin-bottom: 24px !important;
+        }
+        p {
+            font-size: 28px;
+            line-height: 1.4;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container flex flex-col">
+<!-- Header -->
+<div class="px-16 pt-12 pb-4">
+<h1 class="font-bold blue-accent">關鍵技術決策回顧</h1>
+<div class="header-underline"></div>
+</div>
+<!-- Main content - Two columns -->
+<div class="flex flex-1 px-16 pb-16">
+<!-- Left column -->
+<div class="w-1/2 pr-8 content-area">
+<h2 class="font-semibold green-accent">核心決策</h2>
+<div class="list-item">
+<i class="fas fa-server list-icon blue-accent"></i>
+<p>離線優先：TTS預生成 + Redis快照</p>
+</div>
+<div class="list-item">
+<i class="fas fa-network-wired list-icon blue-accent"></i>
+<p>通訊雙軌：MQTT(手機) / WebSocket(看板)</p>
+</div>
+<div class="list-item">
+<i class="fas fa-tools list-icon blue-accent"></i>
+<p>可維運性：JSON原子寫入、服務化部署</p>
+</div>
+<div class="list-item">
+<i class="fas fa-universal-access list-icon blue-accent"></i>
+<p>人因設計：視障友善UI為優先考量</p>
+</div>
+</div>
+<!-- Right column -->
+<div class="w-1/2 pl-8 content-area">
+<h2 class="font-semibold green-accent">決策理由</h2>
+<div class="list-item">
+<i class="fas fa-lightbulb list-icon green-accent"></i>
+<p>網路不穩環境下，預先生成70個語音片段，實現完全離線運作；Redis 15分鐘快照保證資料安全</p>
+</div>
+<div class="list-item">
+<i class="fas fa-sitemap list-icon green-accent"></i>
+<p>MQTT省電穩定，適合手機端；WebSocket瀏覽器原生支援，適合大屏幕看板，完美互補</p>
+</div>
+<div class="list-item">
+<i class="fas fa-cogs list-icon green-accent"></i>
+<p>避免SQLite鎖定，JSON原子寫入更安全；Windows服務方式部署，10-15分鐘內自動恢復</p>
+</div>
+<div class="list-item">
+<i class="fas fa-eye list-icon green-accent"></i>
+<p>超大字體、高對比色、形狀+顏色雙重編碼，確保視障患者能夠清晰辨識叫號資訊</p>
+</div>
+</div>
+</div>
+<!-- Decorative elements -->
+<div class="circuit-line" style="top: 150px; right: 80px; width: 200px; transform: rotate(-30deg);"></div>
+<div class="circuit-line" style="bottom: 100px; left: 150px; width: 250px; transform: rotate(15deg);"></div>
+<div class="tech-dot" style="top: 200px; left: 300px;"></div>
+<div class="tech-dot" style="bottom: 250px; right: 200px;"></div>
+<div class="tech-dot" style="top: 120px; right: 350px;"></div>
+<!-- Watermark -->
+<div class="watermark">
+            Licensed to MOPCON 2025
+        </div>
+</div>
+</body>
+</html>

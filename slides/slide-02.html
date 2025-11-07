@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>講者介紹</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0a1929;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .blue-accent {
+            color: #2196F3;
+        }
+        .green-accent {
+            color: #4CAF50;
+        }
+        .content-area {
+            z-index: 5;
+        }
+        .list-item {
+            margin-bottom: 18px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .list-icon {
+            margin-right: 12px;
+            margin-top: 6px;
+            font-size: 20px;
+        }
+        .circuit-line {
+            position: absolute;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+        .tech-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            z-index: 1;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 16px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+        .header-underline {
+            height: 5px;
+            width: 80px;
+            background-color: #4CAF50;
+            margin-top: 10px;
+            margin-bottom: 24px;
+        }
+        p {
+            font-size: 26px;
+            line-height: 1.4;
+            margin: 0;
+        }
+        h1 {
+            font-size: 42px !important;
+        }
+        h2 {
+            font-size: 32px !important;
+            margin-bottom: 20px !important;
+        }
+        .subtitle {
+            font-size: 24px;
+            color: #90caf9;
+            margin-top: 6px;
+        }
+        .qr-container {
+            position: absolute;
+            right: 20px;
+            bottom: 60px;
+            text-align: center;
+        }
+        .qr-label {
+            font-size: 18px;
+            color: #90caf9;
+            margin-top: 8px;
+        }
+        .qr-code {
+            border: 3px solid #2196F3;
+            padding: 5px;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container flex flex-col">
+<!-- Header -->
+<div class="px-16 pt-12 pb-4">
+<h1 class="text-4xl font-bold blue-accent">講者介紹 - 許家誠 Stephen Hsu</h1>
+<p class="subtitle">Aldrich International Entertainment Co., Ltd. | YITAI INTERNATIONAL TECH CO., LTD</p>
+<div class="header-underline"></div>
+</div>
+<!-- Main content - Two columns -->
+<div class="flex flex-1 px-16 pb-12">
+<!-- Left column -->
+<div class="w-1/2 pr-8 content-area">
+<h2 class="text-2xl font-semibold green-accent">技術專業與系統整合</h2>
+<div class="list-item">
+<i class="fas fa-microchip list-icon blue-accent"></i>
+<p>軟硬韌體系統整合 | 資安風險控管</p>
+</div>
+<div class="list-item">
+<i class="fas fa-tasks list-icon blue-accent"></i>
+<p>Technical PM | DQA/SQA | 專案管理</p>
+</div>
+<div class="list-item">
+<i class="fas fa-code list-icon blue-accent"></i>
+<p>全端開發：React.js | Python | Golang</p>
+</div>
+<div class="list-item">
+<i class="fas fa-database list-icon blue-accent"></i>
+<p>開源ERP系統（Odoo）客製化與導入</p>
+</div>
+<div class="list-item">
+<i class="fas fa-cogs list-icon blue-accent"></i>
+<p>作業流程優化 | 自動化應用推動</p>
+</div>
+</div>
+<!-- Right column -->
+<div class="w-1/2 pl-8 content-area">
+<h2 class="text-2xl font-semibold green-accent">AI應用與社會參與</h2>
+<div class="list-item">
+<i class="fas fa-laptop-medical list-icon green-accent"></i>
+<p>智能販賣機研發 | 金流/發票整合</p>
+</div>
+<div class="list-item">
+<i class="fas fa-brain list-icon green-accent"></i>
+<p>AI創作教學 | 實務場域應用推廣</p>
+</div>
+<div class="list-item">
+<i class="fas fa-chart-line list-icon green-accent"></i>
+<p>數位行銷策略 | EFP | UTM分析</p>
+</div>
+<div class="list-item">
+<i class="fas fa-users list-icon green-accent"></i>
+<p>媒體整合行銷 | 品牌互動設計</p>
+</div>
+<div class="list-item">
+<i class="fas fa-globe list-icon green-accent"></i>
+<p>NPO國際志工服務 | 跨文化交流</p>
+</div>
+</div>
+</div>
+<!-- QR Code -->
+<div class="qr-container">
+<img alt="個人資料 QR Code" class="qr-code" height="150" src="https://page.gensparksite.com/slides_images/f93fc8c76667d77874efa8b922c320bd.png" width="150"/>
+<p class="qr-label">個人資料</p>
+</div>
+<!-- Decorative elements -->
+<div class="circuit-line" style="top: 150px; right: 80px; width: 200px; transform: rotate(-30deg);"></div>
+<div class="circuit-line" style="bottom: 100px; left: 150px; width: 250px; transform: rotate(15deg);"></div>
+<div class="tech-dot" style="top: 200px; left: 300px;"></div>
+<div class="tech-dot" style="bottom: 250px; right: 200px;"></div>
+<div class="tech-dot" style="top: 120px; right: 350px;"></div>
+<!-- Watermark -->
+<div class="watermark">
+            Licensed to MOPCON 2025
+        </div>
+</div>
+</body>
+</html>

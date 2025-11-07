@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MOPCON 2025</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0a1929;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .accent-color-blue {
+            color: #2196F3;
+        }
+        .accent-color-green {
+            color: #4CAF50;
+        }
+        .circuit-line {
+            position: absolute;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+            z-index: 1;
+        }
+        .tech-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            z-index: 1;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 14px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+        .mopcon-badge {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 24px;
+            z-index: 5;
+        }
+        .title-area {
+            max-width: 80%;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container flex flex-col justify-center items-start p-16">
+<!-- Tech decoration elements -->
+<div class="circuit-line" style="top: 50px; left: 30px; width: 300px; transform: rotate(45deg);"></div>
+<div class="circuit-line" style="bottom: 70px; right: 50px; width: 200px;"></div>
+<div class="tech-dot" style="top: 150px; left: 100px;"></div>
+<div class="tech-dot" style="bottom: 200px; right: 300px;"></div>
+<div class="tech-dot" style="top: 300px; right: 200px;"></div>
+<!-- MOPCON Badge -->
+<div class="mopcon-badge">
+            MOPCON 2025
+        </div>
+<!-- Main content -->
+<div class="title-area z-10">
+<h1 class="text-4xl font-black mb-4">
+<p class="text-white mb-2">離線到雲端的智慧候診系統：</p>
+<p class="mt-1"><span class="accent-color-blue">AI</span> 聲音合成與<span class="accent-color-green">多終端同步</span>實戰</p>
+</h1>
+<p class="text-lg text-gray-300 mt-6 mb-12">Offline-to-Cloud Smart Queue System: AI Speech Synthesis &amp; Multi-device Sync in Practice</p>
+<div class="mt-12">
+<p class="text-lg">
+<i class="fas fa-user mr-2 accent-color-blue"></i> <span class="font-medium">講者：許家誠 Stephen Hsu</span>
+</p>
+<p class="text-lg mt-2">
+<i class="fas fa-building mr-2 accent-color-green"></i> <span class="font-medium">Aldrich International Entertainment Co., Ltd.</span>
+</p>
+<p class="text-lg mt-2">
+<i class="fab fa-github mr-2 accent-color-blue"></i> <span class="font-medium">github.com/jiachengx</span>
+</p>
+<p class="text-lg mt-2">
+<i class="fas fa-envelope mr-2 accent-color-green"></i> <span class="font-medium">chiacheng.hsu@owasp.org</span>
+</p>
+</div>
+</div>
+<!-- Medical/Tech icons in background -->
+<div class="absolute right-32 bottom-32 opacity-20 text-9xl z-0">
+<i class="fas fa-microchip mr-8 accent-color-blue"></i>
+<i class="fas fa-hospital-user accent-color-green"></i>
+</div>
+<!-- Watermark -->
+<div class="watermark">
+            Licensed to MOPCON 2025
+        </div>
+</div>
+</body>
+</html>

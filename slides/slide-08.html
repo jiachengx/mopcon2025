@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>雙協定策略：MQTT vs WebSocket</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0a1929;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .blue-accent {
+            color: #2196F3;
+        }
+        .green-accent {
+            color: #4CAF50;
+        }
+        .content-area {
+            z-index: 5;
+        }
+        .table-header {
+            background-color: rgba(33, 150, 243, 0.2);
+            border-bottom: 2px solid #2196F3;
+        }
+        .table-row:nth-child(odd) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        .table-row:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        .table-row:hover {
+            background-color: rgba(33, 150, 243, 0.1);
+        }
+        .table-cell {
+            padding: 14px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .table-container {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+        }
+        .circuit-line {
+            position: absolute;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+        .tech-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            z-index: 1;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 14px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+        .header-underline {
+            height: 6px;
+            width: 100px;
+            background-color: #4CAF50;
+            margin-top: 12px;
+            margin-bottom: 32px;
+        }
+        .table-footer {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-top: 2px solid #4CAF50;
+            font-weight: 500;
+        }
+        .protocol-icon {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        .mqtt-icon {
+            background-color: rgba(76, 175, 80, 0.2);
+            border: 2px solid #4CAF50;
+        }
+        .ws-icon {
+            background-color: rgba(33, 150, 243, 0.2);
+            border: 2px solid #2196F3;
+        }
+        .highlight-feature {
+            border-left: 4px solid #4CAF50;
+            padding-left: 8px;
+        }
+        .header-text {
+            font-size: 48px;
+            line-height: 1.2;
+        }
+        .table-header-text {
+            font-size: 32px;
+            line-height: 1.3;
+        }
+        .table-content-text {
+            font-size: 26px;
+            line-height: 1.4;
+        }
+        .table-footer-text {
+            font-size: 28px;
+            line-height: 1.4;
+        }
+        .note-text {
+            font-size: 22px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container flex flex-col">
+<!-- Header -->
+<div class="px-16 pt-12 pb-4">
+<h1 class="header-text font-bold blue-accent">雙協定策略：MQTT vs WebSocket</h1>
+<div class="header-underline"></div>
+</div>
+<!-- Main content - Table -->
+<div class="flex-1 px-16 pb-10 content-area">
+<div class="table-container">
+<!-- Table header -->
+<div class="flex table-header">
+<div class="flex-1 table-cell font-bold"><p class="table-header-text"><i class="fas fa-network-wired mr-3 blue-accent"></i> 面向</p></div>
+<div class="w-2/5 table-cell font-bold"><p class="table-header-text"><span class="protocol-icon mqtt-icon"><i class="fas fa-mobile-alt green-accent"></i></span> MQTT (手機)</p></div>
+<div class="w-2/5 table-cell font-bold"><p class="table-header-text"><span class="protocol-icon ws-icon"><i class="fas fa-desktop blue-accent"></i></span> WebSocket (瀏覽器)</p></div>
+</div>
+<!-- Table rows -->
+<div class="flex table-row">
+<div class="flex-1 table-cell flex items-center">
+<p class="table-content-text"><span class="highlight-feature">省電與穩定</span></p>
+</div>
+<div class="w-2/5 table-cell">
+<p class="table-content-text"><i class="fas fa-battery-full mr-2 green-accent"></i> QoS 1 確保送達，低功耗設計</p>
+</div>
+<div class="w-2/5 table-cell">
+<p class="table-content-text"><i class="fas fa-plug mr-2 blue-accent"></i> 持續連線，相對耗電</p>
+</div>
+</div>
+<div class="flex table-row">
+<div class="flex-1 table-cell flex items-center">
+<p class="table-content-text"><span class="highlight-feature">拓撲結構</span></p>
+</div>
+<div class="w-2/5 table-cell">
+<p class="table-content-text"><i class="fas fa-project-diagram mr-2 green-accent"></i> Pub/Sub 多對多模型</p>
+</div>
+<div class="w-2/5 table-cell">
+<p class="table-content-text"><i class="fas fa-exchange-alt mr-2 blue-accent"></i> 點對點雙向連線</p>
+</div>
+</div>
+<div class="flex table-row">
+<div class="flex-1 table-cell flex items-center">
+<p class="table-content-text"><span class="highlight-feature">傳輸保證</span></p>
+</div>
+<div class="w-2/5 table-cell">
+<p class="table-content-text"><i class="fas fa-shield-alt mr-2 green-accent"></i> QoS 0-2 三級保證機制</p>
+</div>
+<div class="w-2/5 table-cell">
+<p class="table-content-text"><i class="fas fa-sync mr-2 blue-accent"></i> TCP層保證，應用層需自實作</p>
+</div>
+</div>
+<div class="flex table-row">
+<div class="flex-1 table-cell flex items-center">
+<p class="table-content-text"><span class="highlight-feature">訊息路由</span></p>
+</div>
+<div class="w-2/5 table-cell">
+<p class="table-content-text"><i class="fas fa-route mr-2 green-accent"></i> Topic過濾，精準訂閱</p>
+</div>
+<div class="w-2/5 table-cell">
+<p class="table-content-text"><i class="fas fa-users mr-2 blue-accent"></i> Room分組廣播</p>
+</div>
+</div>
+<div class="flex table-row">
+<div class="flex-1 table-cell flex items-center">
+<p class="table-content-text"><span class="highlight-feature">使用場景</span></p>
+</div>
+<div class="w-2/5 table-cell">
+<p class="table-content-text"><i class="fas fa-mobile-alt mr-2 green-accent"></i> 18醫師手機（低功耗優先）</p>
+</div>
+<div class="w-2/5 table-cell">
+<p class="table-content-text"><i class="fas fa-tv mr-2 blue-accent"></i> Dashboard/廣告屏/TV（即時優先）</p>
+</div>
+</div>
+<!-- Table footer -->
+<div class="flex table-footer">
+<div class="flex-1 table-cell font-medium">
+<p class="table-footer-text">系統結論</p>
+</div>
+<div class="w-2/5 table-cell">
+<p class="table-footer-text"><i class="fas fa-check-circle mr-2 green-accent"></i> 適合不穩網路、電池裝置</p>
+</div>
+<div class="w-2/5 table-cell">
+<p class="table-footer-text"><i class="fas fa-check-circle mr-2 blue-accent"></i> 適合瀏覽器原生、即時互動</p>
+</div>
+</div>
+</div>
+<!-- Notes -->
+<div class="mt-8 bg-opacity-10 bg-green-500 p-5 rounded-md border-l-4 border-green-500">
+<p class="note-text"><i class="fas fa-lightbulb mr-3 blue-accent"></i> <span class="green-accent font-medium">雙協定優勢</span>：結合兩者優點，Android手機透過MQTT省電，瀏覽器設備透過WebSocket即時響應</p>
+</div>
+</div>
+<!-- Decorative elements -->
+<div class="circuit-line" style="top: 140px; right: 120px; width: 200px; transform: rotate(-20deg);"></div>
+<div class="circuit-line" style="bottom: 100px; left: 150px; width: 180px; transform: rotate(10deg);"></div>
+<div class="tech-dot" style="top: 180px; left: 300px;"></div>
+<div class="tech-dot" style="bottom: 220px; right: 280px;"></div>
+<div class="tech-dot" style="top: 120px; right: 320px;"></div>
+<!-- Watermark -->
+<div class="watermark">
+        Licensed to MOPCON 2025
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Demo影片展示</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0a1929;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .blue-accent {
+            color: #2196F3;
+        }
+        .green-accent {
+            color: #4CAF50;
+        }
+        .content-area {
+            z-index: 5;
+        }
+        .list-item {
+            margin-bottom: 22px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .list-icon {
+            margin-right: 12px;
+            margin-top: 6px;
+            font-size: 20px;
+        }
+        .circuit-line {
+            position: absolute;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+        .tech-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            z-index: 1;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 16px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+        .header-underline {
+            height: 5px;
+            width: 80px;
+            background-color: #4CAF50;
+            margin-top: 10px;
+            margin-bottom: 24px;
+        }
+        p {
+            font-size: 26px;
+            line-height: 1.4;
+            margin: 0;
+        }
+        h1 {
+            font-size: 42px !important;
+        }
+        h2 {
+            font-size: 32px !important;
+            margin-bottom: 20px !important;
+        }
+        .subtitle {
+            font-size: 24px;
+            color: #90caf9;
+            margin-top: 6px;
+        }
+        .video-container {
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            position: relative;
+            margin-bottom: 20px;
+            border: 2px solid rgba(33, 150, 243, 0.5);
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container flex flex-col">
+<!-- Header -->
+<div class="px-16 pt-12 pb-4">
+<h1 class="text-4xl font-bold blue-accent">Demo影片展示</h1>
+<p class="subtitle">智慧候診系統實際操作與功能展示</p>
+<div class="header-underline"></div>
+</div>
+<!-- Main content - Two columns -->
+<div class="flex flex-1 px-16 pb-12">
+<!-- Left column - YouTube Video -->
+<div class="w-1/2 pr-8 content-area">
+<div class="video-container">
+<iframe allowfullscreen="" frameborder="0" src="https://www.youtube.com/embed/92UJwcomav4" title="智慧候診系統Demo"></iframe>
+</div>
+<p><i class="fas fa-play-circle blue-accent mr-2"></i>系統完整運作流程展示</p>
+<p class="mt-4"><i class="fas fa-mobile-alt blue-accent mr-2"></i>醫師手機MQTT觸發叫號流程展示</p>
+<p class="mt-4"><i class="fas fa-broadcast-tower blue-accent mr-2"></i>42台設備多裝置即時同步效果</p>
+</div>
+<!-- Right column - Key Points -->
+<div class="w-1/2 pl-8 content-area">
+<h2 class="text-2xl font-semibold green-accent">系統展示重點</h2>
+<div class="list-item">
+<i class="fas fa-check-circle list-icon green-accent"></i>
+<p>醫生端操作介面：一鍵叫號，狀態即時反饋</p>
+</div>
+<div class="list-item">
+<i class="fas fa-check-circle list-icon green-accent"></i>
+<p>大廳電視畫面：超大字體，視障友善設計</p>
+</div>
+<div class="list-item">
+<i class="fas fa-check-circle list-icon green-accent"></i>
+<p>診間外看板：雙色編碼，即時更新病患狀態</p>
+</div>
+<h2 class="text-2xl font-semibold green-accent mt-8">影片後Q&amp;A重點</h2>
+<div class="list-item">
+<i class="fas fa-question-circle list-icon blue-accent"></i>
+<p>系統如何處理網路斷線情境？</p>
+</div>
+<div class="list-item">
+<i class="fas fa-question-circle list-icon blue-accent"></i>
+<p>音效生成與播放的技術挑戰？</p>
+</div>
+<div class="list-item">
+<i class="fas fa-question-circle list-icon blue-accent"></i>
+<p>如何擴展至更多診間與分院？</p>
+</div>
+</div>
+</div>
+<!-- Decorative elements -->
+<div class="circuit-line" style="top: 150px; right: 80px; width: 200px; transform: rotate(-30deg);"></div>
+<div class="circuit-line" style="bottom: 100px; left: 150px; width: 250px; transform: rotate(15deg);"></div>
+<div class="tech-dot" style="top: 200px; left: 300px;"></div>
+<div class="tech-dot" style="bottom: 250px; right: 200px;"></div>
+<div class="tech-dot" style="top: 120px; right: 350px;"></div>
+<!-- Watermark -->
+<div class="watermark">
+            Licensed to MOPCON 2025
+</div>
+</div>
+</body>
+</html>

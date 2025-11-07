@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>高並發處理：Worker Pool + 防抖</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/themes/prism-tomorrow.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0a1929;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .blue-accent {
+            color: #2196F3;
+        }
+        .green-accent {
+            color: #4CAF50;
+        }
+        .content-area {
+            z-index: 5;
+        }
+        .circuit-line {
+            position: absolute;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+        .tech-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            z-index: 1;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 14px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+        .header-underline {
+            height: 4px;
+            width: 80px;
+            background-color: #4CAF50;
+            margin-top: 12px;
+            margin-bottom: 30px;
+        }
+        .code-container {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 20px;
+            overflow: hidden;
+            line-height: 1.5;
+        }
+        .code-highlight {
+            color: #2196F3;
+        }
+        .code-comment {
+            color: #6c757d;
+        }
+        .note-item {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left: 6px solid #4CAF50;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+            border-radius: 0 6px 6px 0;
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+        .note-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #4CAF50;
+            font-size: 30px;
+        }
+        .note-text {
+            font-size: 28px;
+            line-height: 1.4;
+        }
+        .performance-text {
+            font-size: 28px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container flex flex-col">
+<!-- Header -->
+<div class="px-16 pt-12 pb-4">
+<h1 class="text-5xl font-bold blue-accent">高並發處理：Worker Pool + 防抖</h1>
+<div class="header-underline"></div>
+</div>
+<!-- Main content - Two columns -->
+<div class="flex flex-1 px-16 pb-16">
+<!-- Left column - Code -->
+<div class="w-1/2 pr-8 content-area">
+<div class="code-container h-full flex flex-col">
+<pre class="flex-1 text-gray-200">
+<span class="code-highlight">class</span> <span class="green-accent">WorkerPool</span>:
+    <span class="code-highlight">def</span> <span class="green-accent">__init__</span>(self):
+        self.queue = Queue()
+        self.debounce_window = 0.3  <span class="code-comment"># 300ms 去重窗口</span>
+        self.pending_calls = {}
+        self.cache = LRUCache(100)
+        
+        <span class="code-comment"># 初始化4個工作執行緒</span>
+        <span class="code-highlight">for</span> _ in range(4):
+            worker = Thread(target=self._worker_loop)
+            worker.daemon = True
+            worker.start()
+            
+    <span class="code-highlight">def</span> <span class="green-accent">process_call</span>(self, room_id, patient_id):
+        key = f"{room_id}:{patient_id}"
+        now = time.time()
+        
+        <span class="code-highlight">if</span> key <span class="code-highlight">in</span> self.pending_calls:
+            last_time = self.pending_calls[key]
+            <span class="code-highlight">if</span> now - last_time &lt; self.debounce_window:
+                <span class="code-comment"># 300ms內重複點擊，忽略</span>
+                self.pending_calls[key] = now
+                <span class="code-highlight">return</span> False
+                
+        <span class="code-comment"># 加入隊列並記錄時間戳</span>
+        self.pending_calls[key] = now
+        self.queue.put((key, now))
+        <span class="code-highlight">return</span> True
+        
+    <span class="code-highlight">def</span> <span class="green-accent">_worker_loop</span>(self):
+        <span class="code-highlight">while</span> True:
+            key, timestamp = self.queue.get()
+            
+            <span class="code-comment"># 檢查快取</span>
+            <span class="code-highlight">if</span> key <span class="code-highlight">in</span> self.cache:
+                audio = self.cache.get(key)
+            <span class="code-highlight">else</span>:
+                audio = self._generate_audio(key)
+                self.cache.put(key, audio)
+                
+            self._play_audio(audio)
+</pre>
+</div>
+</div>
+<!-- Right column - Notes -->
+<div class="w-1/2 pl-8 content-area">
+<h2 class="text-2xl font-semibold mb-6 green-accent">關鍵設計重點</h2>
+<div class="note-item">
+<p class="note-title"><i class="fas fa-hourglass mr-2"></i>去重窗口：300ms</p>
+<p class="note-text">醫師可能短時間內連點同一號碼，300ms窗口可有效濾掉誤操作</p>
+</div>
+<div class="note-item">
+<p class="note-title"><i class="fas fa-server mr-2"></i>多工處理池</p>
+<p class="note-text">4個背景執行緒並行處理，支援500 ops/sec</p>
+</div>
+<div class="note-item">
+<p class="note-title"><i class="fas fa-bolt mr-2"></i>最新請求優先</p>
+<p class="note-text">時間戳記追蹤，確保只處理最新事件</p>
+</div>
+<div class="note-item">
+<p class="note-title"><i class="fas fa-save mr-2"></i>音訊快取策略</p>
+<p class="note-text">熱門號碼預先合成，大幅降低處理延遲</p>
+</div>
+<div class="mt-8">
+<h3 class="text-2xl font-medium blue-accent mb-4"><i class="fas fa-chart-line mr-2"></i>效能表現</h3>
+<p class="performance-text">• 接收處理：&lt;10ms（幾乎無感）</p>
+<p class="performance-text">• 佇列處理：平均 50-100ms</p>
+<p class="performance-text">• 音訊合成：~200ms</p>
+<p class="performance-text">• 端對端延遲：&lt;300ms</p>
+</div>
+</div>
+</div>
+<!-- Decorative elements -->
+<div class="circuit-line" style="top: 120px; right: 100px; width: 180px; transform: rotate(-30deg);"></div>
+<div class="circuit-line" style="bottom: 120px; left: 80px; width: 220px; transform: rotate(15deg);"></div>
+<div class="tech-dot" style="top: 180px; left: 150px;"></div>
+<div class="tech-dot" style="bottom: 200px; right: 180px;"></div>
+<div class="tech-dot" style="top: 100px; right: 300px;"></div>
+<!-- Watermark -->
+<div class="watermark">
+        Licensed to MOPCON 2025
+    </div>
+</div>
+</body>
+</html>

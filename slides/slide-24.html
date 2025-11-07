@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>視障友善UI設計</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0a1929;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .blue-accent {
+            color: #2196F3;
+        }
+        .green-accent {
+            color: #4CAF50;
+        }
+        .header-underline {
+            height: 4px;
+            width: 60px;
+            background-color: #4CAF50;
+            margin-top: 8px;
+            margin-bottom: 24px;
+        }
+        .photo-container {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .photo-item {
+            position: relative;
+            border: 2px solid rgba(33, 150, 243, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+        }
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .photo-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(10, 25, 41, 0.8);
+            padding: 8px;
+        }
+        .design-feature {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+        .feature-icon {
+            margin-right: 12px;
+            margin-top: 4px;
+            font-size: 18px;
+        }
+        .feature-circle {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            color: white;
+            text-align: center;
+            line-height: 36px;
+            margin-right: 16px;
+            font-size: 20px;
+        }
+        .example-box {
+            margin-top: 16px;
+            padding: 16px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+        .contrast-example {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 16px;
+        }
+        .low-contrast {
+            background-color: #444;
+            color: #666;
+            padding: 12px 16px;
+            border-radius: 4px;
+            width: 48%;
+            font-size: 28px;
+        }
+        .high-contrast {
+            background-color: #000;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 4px;
+            width: 48%;
+            font-size: 28px;
+        }
+        .shape-color-example {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 16px;
+        }
+        .shape-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .shape {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 8px;
+        }
+        .circuit-line {
+            position: absolute;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+        .tech-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            z-index: 1;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 14px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+        .main-title {
+            font-size: 48px;
+            font-weight: bold;
+        }
+        .subtitle {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+        .normal-text {
+            font-size: 28px;
+        }
+        .caption-text {
+            font-size: 24px;
+            font-weight: 500;
+        }
+        .example-standard {
+            font-size: 36px;
+        }
+        .example-large {
+            font-size: 56px;
+            font-weight: bold;
+        }
+        .shape-label {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container flex flex-col">
+<!-- Header -->
+<div class="px-16 pt-12 pb-4">
+<h1 class="main-title blue-accent">視障友善 UI 設計</h1>
+<div class="header-underline"></div>
+</div>
+<!-- Main content - Photo collage and explanation -->
+<div class="flex-1 px-16 pb-12 flex">
+<!-- Left side: Single large photo -->
+<div class="w-1/2 pr-6">
+<div class="photo-container">
+<div class="photo-item">
+<img alt="大廳電視播放畫面" src="https://page.gensparksite.com/v1/base64_upload/bc623ad2e53235f3f73790883514884d"/>
+<div class="photo-caption">
+<p class="green-accent caption-text">超大字體播報：Room 1 NOW SERVING ø123</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right side: Explanation -->
+<div class="w-1/2 pl-6">
+<h2 class="subtitle green-accent">視障友善設計原則</h2>
+<div class="design-feature">
+<div class="feature-circle">1</div>
+<div>
+<p class="font-medium blue-accent normal-text">超大字體 (2-3倍標準尺寸)</p>
+<p class="normal-text mt-2">數字/房間號 72-96pt，醫生名 48-56pt</p>
+<div class="example-box">
+<p class="example-standard">標準文字</p>
+<p class="example-large">2倍大小</p>
+</div>
+</div>
+</div>
+<div class="design-feature">
+<div class="feature-circle">2</div>
+<div>
+<p class="font-medium blue-accent normal-text">高對比配色</p>
+<p class="normal-text mt-2">WCAG 2.1 AAA標準，對比率&gt;7:1</p>
+<div class="contrast-example">
+<div class="low-contrast">
+<p>低對比文字</p>
+</div>
+<div class="high-contrast">
+<p>高對比文字</p>
+</div>
+</div>
+</div>
+</div>
+<div class="design-feature">
+<div class="feature-circle">3</div>
+<div>
+<p class="font-medium blue-accent normal-text">顏色+形狀雙重編碼</p>
+<p class="normal-text mt-2">色盲/色弱友善設計，不僅靠顏色區分</p>
+<div class="shape-color-example">
+<div class="shape-item">
+<div class="shape" style="background-color: #2196F3; border-radius: 4px;"></div>
+<p class="shape-label">方形/藍</p>
+</div>
+<div class="shape-item">
+<div class="shape" style="background-color: #4CAF50; border-radius: 50%;"></div>
+<p class="shape-label">圓形/綠</p>
+</div>
+<div class="shape-item">
+<div class="shape" style="background-color: #FFC107; clip-path: polygon(50% 0%, 100% 100%, 0% 100%);"></div>
+<p class="shape-label">三角/黃</p>
+</div>
+</div>
+</div>
+</div>
+<div class="design-feature">
+<div class="feature-circle">4</div>
+<div>
+<p class="font-medium blue-accent normal-text">觸控熱區放大、誤觸防護</p>
+<p class="normal-text mt-2">按鈕間距≥16px，最小觸控區域 44x44px</p>
+<p class="normal-text mt-2">重要操作需二次確認，避免誤觸</p>
+</div>
+</div>
+<div class="design-feature">
+<div class="feature-circle">5</div>
+<div>
+<p class="font-medium blue-accent normal-text">聲音+視覺雙重反饋</p>
+<p class="normal-text mt-2">操作確認音、Ding-Dong提示、清晰語音</p>
+<p class="normal-text mt-2">獨特音調區分不同類型通知</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative elements -->
+<div class="circuit-line" style="top: 150px; right: 80px; width: 200px; transform: rotate(-30deg);"></div>
+<div class="circuit-line" style="bottom: 100px; left: 150px; width: 250px; transform: rotate(15deg);"></div>
+<div class="tech-dot" style="top: 200px; left: 300px;"></div>
+<div class="tech-dot" style="bottom: 250px; right: 200px;"></div>
+<div class="tech-dot" style="top: 120px; right: 350px;"></div>
+<!-- Watermark -->
+<div class="watermark">
+        Licensed to MOPCON 2025
+    </div>
+</div>
+</body>
+</html>

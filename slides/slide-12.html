@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #0a1929;
+            color: #fff;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            max-height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 40px;
+            box-sizing: border-box;
+            background-color: #0a1929;
+            position: relative;
+            color: #fff;
+            overflow: hidden;
+        }
+        .slide-title {
+            font-size: 42px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #60a5fa;
+        }
+        .chart-container {
+            height: 260px;
+            margin-bottom: 20px;
+            background-color: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, auto);
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        .metric-card {
+            background-color: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .metric-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #e2e8f0;
+        }
+        .metric-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #3b82f6;
+            margin-bottom: 5px;
+        }
+        .metric-value.blue {
+            color: #60a5fa;
+        }
+        .metric-value.light-blue {
+            color: #93c5fd;
+        }
+        .metric-value.green {
+            color: #34d399;
+        }
+        .metric-value.light-green {
+            color: #6ee7b7;
+        }
+        .metric-value.yellow {
+            color: #fbbf24;
+        }
+        .metric-desc {
+            font-size: 18px;
+            color: #cbd5e1;
+        }
+        .metrics-summary {
+            background-color: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            grid-column: span 3;
+        }
+        .summary-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #e2e8f0;
+        }
+        .summary-content {
+            font-size: 18px;
+            color: #cbd5e1;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            font-size: 14px;
+            color: #64748b;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<h1 class="slide-title">效能數據圖表</h1>
+<!-- 上半部：Chart.js 橫向柱狀圖 -->
+<div class="chart-container">
+<canvas id="performanceChart"></canvas>
+</div>
+<!-- 下半部：效能指標卡片 -->
+<div class="metrics-grid">
+<div class="metric-card">
+<h2 class="metric-title">接收層延遲</h2>
+<div class="metric-value blue">10ms</div>
+<p class="metric-desc">API請求處理時間</p>
+</div>
+<div class="metric-card">
+<h2 class="metric-title">端對端延遲</h2>
+<div class="metric-value light-blue">300ms</div>
+<p class="metric-desc">請求到播放總延遲</p>
+</div>
+<div class="metric-card">
+<h2 class="metric-title">峰值吞吐量</h2>
+<div class="metric-value green">500 ops/s</div>
+<p class="metric-desc">系統最大處理能力</p>
+</div>
+<div class="metric-card">
+<h2 class="metric-title">實際吞吐量</h2>
+<div class="metric-value light-green">0.32 ops/s</div>
+<p class="metric-desc">平均請求頻率</p>
+</div>
+<div class="metric-card">
+<h2 class="metric-title">記憶體使用</h2>
+<div class="metric-value yellow">400MB</div>
+<p class="metric-desc">含預生成音訊檔案</p>
+</div>
+<div class="metrics-summary">
+<h2 class="summary-title">系統效能總結</h2>
+<p class="summary-content">接收層處理延遲&lt;10ms，端對端延遲&lt;300ms，低於人類感知閾值。峰值吞吐量500次/秒遠超實際需求(0.32次/秒)，僅使用400MB記憶體確保低階設備穩定運行。</p>
+</div>
+</div>
+<div class="watermark">Licensed to MOPCON 2025</div>
+<script>
+    // 創建橫向柱狀圖
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['接收層延遲 (ms)', '端對端延遲 (ms)', '峰值吞吐量 (ops/s)', '實際吞吐量 (ops/s)', '記憶體使用 (MB)'],
+            datasets: [{
+                label: '系統效能指標',
+                data: [10, 300, 500, 0.32, 400],
+                backgroundColor: [
+                    '#60a5fa',  // 藍色
+                    '#93c5fd',  // 淺藍色
+                    '#34d399',  // 綠色
+                    '#6ee7b7',  // 淺綠色
+                    '#fbbf24'   // 黃色
+                ],
+                borderColor: [
+                    '#2563eb',
+                    '#3b82f6',
+                    '#059669',
+                    '#10b981',
+                    '#d97706'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',  // 設置為橫向柱狀圖
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    titleColor: '#fff',
+                    bodyColor: '#cbd5e1',
+                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                    borderWidth: 1
+                }
+            },
+            scales: {
+                y: {
+                    ticks: {
+                        color: '#e2e8f0',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#cbd5e1',
+                        font: {
+                            size: 14
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                }
+            }
+        }
+    });
+</script>
+</div>
+</body>
+</html>

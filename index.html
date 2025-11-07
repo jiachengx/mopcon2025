@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOPCON 2025 - 簡報</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        /* 全螢幕容器 */
+        .fullscreen-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            position: relative;
+        }
+
+        /* 投影片框架 */
+        .slide-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-container iframe {
+            border: none;
+            background: white;
+            max-width: 100vw;
+            max-height: 100vh;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 計時器 */
+        .timer {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 32px;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .timer.warning {
+            background: rgba(255, 152, 0, 0.9);
+            border-color: #ff9800;
+            color: #000;
+        }
+
+        .timer.danger {
+            background: rgba(244, 67, 54, 0.9);
+            border-color: #f44336;
+            color: white;
+            animation: timerPulse 1s infinite;
+        }
+
+        @keyframes timerPulse {
+            0%, 100% { 
+                opacity: 1; 
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 0.7;
+                transform: scale(1.05);
+            }
+        }
+
+        /* 載入動畫 */
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            z-index: 999;
+            display: none;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        /* 頁碼指示器（隱藏，可按 I 顯示） */
+        .page-indicator {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 20px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .page-indicator.show {
+            opacity: 1;
+        }
+
+        .page-indicator .current {
+            color: #4CAF50;
+            font-weight: 700;
+        }
+
+        .page-indicator .total {
+            color: #888;
+        }
+
+        /* 快捷鍵提示 */
+        .hint {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            color: white;
+            padding: 40px 60px;
+            border-radius: 12px;
+            font-size: 18px;
+            z-index: 2000;
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            white-space: pre-line;
+            line-height: 1.8;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .hint.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .hint h2 {
+            margin-bottom: 20px;
+            color: #4CAF50;
+            text-align: center;
+        }
+
+        /* 進度條 */
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .progress-bar.show {
+            opacity: 1;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2196F3, #4CAF50);
+            transition: width 0.3s;
+        }
+
+        /* 響應式 */
+        @media (max-width: 768px) {
+            .timer {
+                bottom: 20px;
+                right: 20px;
+                font-size: 24px;
+                padding: 12px 20px;
+            }
+
+            .page-indicator {
+                top: 20px;
+                left: 20px;
+                font-size: 16px;
+                padding: 8px 15px;
+            }
+
+            .hint {
+                padding: 30px 40px;
+                font-size: 16px;
+                max-width: 90vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fullscreen-container">
+        <div class="slide-container">
+            <iframe id="slideIframe" src="slides/slide-01.html"></iframe>
+        </div>
+        <div class="loading" id="loading">載入中...</div>
+    </div>
+
+    <!-- 計時器 -->
+    <div class="timer" id="timer">00:00</div>
+
+    <!-- 頁碼指示器 -->
+    <div class="page-indicator" id="pageIndicator">
+        <span class="current" id="currentPage">1</span>
+        <span> / </span>
+        <span class="total" id="totalPages">32</span>
+    </div>
+
+    <!-- 進度條 -->
+    <div class="progress-bar" id="progressBar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <!-- 快捷鍵提示 -->
+    <div class="hint" id="hint">
+        <h2>🎯 簡報控制快捷鍵</h2>
+        
+        <strong>▶️  基本操作：</strong>
+        → / Space / 點擊：下一頁
+        ←：上一頁
+        Home：第一頁
+        End：最後一頁
+        
+        <strong>🔢  快速跳轉：</strong>
+        數字鍵 1-9：直接跳到該頁
+        
+        <strong>ℹ️  資訊顯示：</strong>
+        I：顯示/隱藏頁碼
+        P：顯示/隱藏進度條
+        
+        <strong>⏱️  計時器：</strong>
+        • 40 分鐘：⚠️ 橙色警告
+        • 43 分鐘：🚨 紅色閃爍
+        T：顯示/隱藏計時器
+        R：重置計時器
+        
+        <strong>❓  其他：</strong>
+        H / ?：顯示此幫助（再按關閉）
+        ESC：關閉幫助視窗
+    </div>
+
+    <script>
+        class SimpleSlidePlayer {
+            constructor() {
+                this.currentSlide = 1;
+                this.totalSlides = 32;
+                this.timerStarted = false;
+                this.startTime = null;
+                this.timerInterval = null;
+                this.showPageIndicator = false;
+                this.showProgressBar = false;
+                this.showTimer = true;
+                this.showHint = false;
+
+                this.init();
+            }
+
+            init() {
+                this.cacheElements();
+                this.bindEvents();
+                this.loadSlideFromURL();
+                this.startTimer();
+                this.updateUI();
+                
+                // 自動進入全螢幕（需要用戶互動）
+                document.addEventListener('click', () => {
+                    if (!document.fullscreenElement) {
+                        document.documentElement.requestFullscreen().catch(() => {});
+                    }
+                }, { once: true });
+            }
+
+            cacheElements() {
+                this.slideIframe = document.getElementById('slideIframe');
+                this.timer = document.getElementById('timer');
+                this.loading = document.getElementById('loading');
+                this.pageIndicator = document.getElementById('pageIndicator');
+                this.currentPageEl = document.getElementById('currentPage');
+                this.totalPagesEl = document.getElementById('totalPages');
+                this.progressBar = document.getElementById('progressBar');
+                this.progressFill = document.getElementById('progressFill');
+                this.hint = document.getElementById('hint');
+            }
+
+            bindEvents() {
+                // 鍵盤控制
+                document.addEventListener('keydown', (e) => this.handleKeyboard(e));
+
+                // 點擊切換到下一頁
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.hint')) {
+                        this.nextSlide();
+                    }
+                });
+
+                // iframe 載入完成
+                this.slideIframe.addEventListener('load', () => {
+                    this.loading.classList.remove('show');
+                });
+
+                // 觸控手勢
+                let startX = null;
+                document.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                });
+
+                document.addEventListener('touchend', (e) => {
+                    if (startX === null) return;
+                    const endX = e.changedTouches[0].clientX;
+                    const diffX = startX - endX;
+
+                    if (Math.abs(diffX) > 50) {
+                        if (diffX > 0) {
+                            this.nextSlide();
+                        } else {
+                            this.prevSlide();
+                        }
+                    }
+                    startX = null;
+                });
+            }
+
+            handleKeyboard(e) {
+                // 如果提示視窗開啟，ESC/H 關閉
+                if (this.showHint) {
+                    if (e.key === 'Escape' || e.key === 'h' || e.key === 'H' || e.key === '?') {
+                        e.preventDefault();
+                        this.toggleHint();
+                        return;
+                    }
+                }
+
+                switch(e.key) {
+                    case 'ArrowRight':
+                    case ' ':
+                        e.preventDefault();
+                        this.nextSlide();
+                        break;
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        this.prevSlide();
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        this.goToSlide(1);
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        this.goToSlide(this.totalSlides);
+                        break;
+                    case 'h':
+                    case 'H':
+                    case '?':
+                        e.preventDefault();
+                        this.toggleHint();
+                        break;
+                    case 'i':
+                    case 'I':
+                        e.preventDefault();
+                        this.togglePageIndicator();
+                        break;
+                    case 'p':
+                    case 'P':
+                        e.preventDefault();
+                        this.toggleProgressBar();
+                        break;
+                    case 't':
+                    case 'T':
+                        e.preventDefault();
+                        this.toggleTimer();
+                        break;
+                    case 'r':
+                    case 'R':
+                        e.preventDefault();
+                        this.resetTimer();
+                        break;
+                    case 'Escape':
+                        if (this.showHint) {
+                            this.toggleHint();
+                        }
+                        break;
+                }
+
+                // 數字鍵跳轉
+                if (e.key >= '1' && e.key <= '9') {
+                    const num = parseInt(e.key);
+                    if (num <= this.totalSlides) {
+                        this.goToSlide(num);
+                    }
+                }
+            }
+
+            nextSlide() {
+                if (this.currentSlide < this.totalSlides) {
+                    this.goToSlide(this.currentSlide + 1);
+                }
+            }
+
+            prevSlide() {
+                if (this.currentSlide > 1) {
+                    this.goToSlide(this.currentSlide - 1);
+                }
+            }
+
+            goToSlide(num) {
+                if (num < 1 || num > this.totalSlides) return;
+
+                this.currentSlide = num;
+                this.loading.classList.add('show');
+
+                const slideNum = String(num).padStart(2, '0');
+                this.slideIframe.src = `slides/slide-${slideNum}.html`;
+
+                this.updateUI();
+                this.updateURL();
+            }
+
+            updateUI() {
+                // 更新頁碼
+                this.currentPageEl.textContent = this.currentSlide;
+                this.totalPagesEl.textContent = this.totalSlides;
+
+                // 更新進度條
+                const progress = (this.currentSlide / this.totalSlides) * 100;
+                this.progressFill.style.width = `${progress}%`;
+            }
+
+            updateURL() {
+                window.history.replaceState(null, '', `#page-${this.currentSlide}`);
+            }
+
+            loadSlideFromURL() {
+                const hash = window.location.hash;
+                const match = hash.match(/#page-(\d+)/);
+                if (match) {
+                    const page = parseInt(match[1]);
+                    if (page >= 1 && page <= this.totalSlides) {
+                        this.currentSlide = page;
+                        this.goToSlide(page);
+                        return;
+                    }
+                }
+                this.goToSlide(1);
+            }
+
+            startTimer() {
+                if (this.timerStarted) return;
+                
+                this.timerStarted = true;
+                this.startTime = Date.now();
+                this.updateTimerDisplay();
+                
+                this.timerInterval = setInterval(() => {
+                    this.updateTimerDisplay();
+                }, 1000);
+            }
+
+            updateTimerDisplay() {
+                const elapsed = Date.now() - this.startTime;
+                const minutes = Math.floor(elapsed / 60000);
+                const seconds = Math.floor((elapsed % 60000) / 1000);
+
+                this.timer.textContent = 
+                    `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                // 時間警告
+                this.timer.classList.remove('warning', 'danger');
+                if (minutes >= 43) {
+                    this.timer.classList.add('danger');
+                } else if (minutes >= 40) {
+                    this.timer.classList.add('warning');
+                }
+            }
+
+            resetTimer() {
+                this.startTime = Date.now();
+                this.timer.classList.remove('warning', 'danger');
+                this.updateTimerDisplay();
+            }
+
+            togglePageIndicator() {
+                this.showPageIndicator = !this.showPageIndicator;
+                this.pageIndicator.classList.toggle('show', this.showPageIndicator);
+            }
+
+            toggleProgressBar() {
+                this.showProgressBar = !this.showProgressBar;
+                this.progressBar.classList.toggle('show', this.showProgressBar);
+            }
+
+            toggleTimer() {
+                this.showTimer = !this.showTimer;
+                this.timer.style.display = this.showTimer ? 'block' : 'none';
+            }
+
+            toggleHint() {
+                this.showHint = !this.showHint;
+                this.hint.classList.toggle('show', this.showHint);
+            }
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            const player = new SimpleSlidePlayer();
+            window.player = player;
+            
+            // 首次載入顯示提示 3 秒
+            setTimeout(() => {
+                player.hint.classList.add('show');
+                player.showHint = true;
+                setTimeout(() => {
+                    player.hint.classList.remove('show');
+                    player.showHint = false;
+                }, 3000);
+            }, 500);
+        });
+    </script>
+</body>
+</html>

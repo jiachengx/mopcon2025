@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>軟體保護與授權管理</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0a1929;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .blue-accent {
+            color: #2196F3;
+        }
+        .green-accent {
+            color: #4CAF50;
+        }
+        .content-area {
+            z-index: 5;
+        }
+        .list-item {
+            margin-bottom: 24px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .list-icon {
+            margin-right: 16px;
+            margin-top: 6px;
+            font-size: 24px;
+        }
+        .circuit-line {
+            position: absolute;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+        .tech-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            z-index: 1;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 16px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+        .header-underline {
+            height: 5px;
+            width: 80px;
+            background-color: #4CAF50;
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+        .code-block {
+            background-color: rgba(33, 150, 243, 0.1);
+            border-left: 4px solid #2196F3;
+            padding: 12px 16px;
+            margin-top: 10px;
+            font-family: 'Consolas', monospace;
+            font-size: 20px;
+            border-radius: 4px;
+            line-height: 1.4;
+        }
+        h1 {
+            font-size: 48px;
+            line-height: 1.2;
+        }
+        h2 {
+            font-size: 36px;
+            margin-bottom: 24px;
+        }
+        p {
+            font-size: 28px;
+            line-height: 1.4;
+            margin: 0;
+        }
+        .secondary-text {
+            font-size: 24px;
+            color: #b0bec5;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container flex flex-col">
+<!-- Header -->
+<div class="px-16 pt-12 pb-4">
+<h1 class="font-bold blue-accent">軟體保護與授權管理</h1>
+<div class="header-underline"></div>
+</div>
+<!-- Main content - Two columns -->
+<div class="flex flex-1 px-16 pb-16">
+<!-- Left column -->
+<div class="w-1/2 pr-8 content-area">
+<h2 class="font-semibold green-accent">程式碼保護策略</h2>
+<div class="list-item">
+<i class="fas fa-archive list-icon blue-accent"></i>
+<div>
+<p>PyInstaller打包（onedir模式）</p>
+<p class="secondary-text">無需Python環境，整合所有依賴項</p>
+<div class="code-block">pyinstaller --onedir --name "ClinicQueueSystem" app.py</div>
+</div>
+</div>
+<div class="list-item">
+<i class="fas fa-shield-alt list-icon blue-accent"></i>
+<div>
+<p>授權檔案加密（Fernet對稱加密）</p>
+<p class="secondary-text">加密存儲客戶資訊、到期日、功能權限</p>
+</div>
+</div>
+<div class="list-item">
+<i class="fas fa-signature list-icon blue-accent"></i>
+<div>
+<p>SHA256簽章驗證</p>
+<p class="secondary-text">防止授權檔案被篡改或複製</p>
+</div>
+</div>
+</div>
+<!-- Right column -->
+<div class="w-1/2 pl-8 content-area">
+<h2 class="font-semibold green-accent">部署與授權流程</h2>
+<div class="list-item">
+<i class="fas fa-box-open list-icon green-accent"></i>
+<div>
+<p>Inno Setup安裝程式</p>
+<p class="secondary-text">整合所有依賴（Redis, MQTT, FFmpeg）</p>
+<p class="secondary-text">安裝精靈引導+授權資訊填寫</p>
+</div>
+</div>
+<div class="list-item">
+<i class="fas fa-cogs list-icon green-accent"></i>
+<div>
+<p>Windows服務部署（NSSM）</p>
+<p class="secondary-text">系統啟動自動執行、斷電復原</p>
+<p class="secondary-text">服務依賴設定：Redis → MQTT → App</p>
+</div>
+</div>
+<div class="list-item">
+<i class="fas fa-key list-icon green-accent"></i>
+<div>
+<p>授權管理系統</p>
+<p class="secondary-text">遠程授權檔案生成與下發</p>
+<p class="secondary-text">到期日提醒、功能限制機制</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative elements -->
+<div class="circuit-line" style="top: 150px; right: 80px; width: 200px; transform: rotate(-30deg);"></div>
+<div class="circuit-line" style="bottom: 100px; left: 150px; width: 250px; transform: rotate(15deg);"></div>
+<div class="tech-dot" style="top: 200px; left: 300px;"></div>
+<div class="tech-dot" style="bottom: 250px; right: 200px;"></div>
+<div class="tech-dot" style="top: 120px; right: 350px;"></div>
+<!-- Watermark -->
+<div class="watermark">
+            Licensed to MOPCON 2025
+        </div>
+</div>
+</body>
+</html>

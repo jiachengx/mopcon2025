@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>語音品質優化實測</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0a1929;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .blue-accent {
+            color: #2196F3;
+        }
+        .green-accent {
+            color: #4CAF50;
+        }
+        .content-area {
+            z-index: 5;
+        }
+        .list-item {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .list-icon {
+            margin-right: 16px;
+            margin-top: 6px;
+            font-size: 24px;
+        }
+        .circuit-line {
+            position: absolute;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+        .tech-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            z-index: 1;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 16px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+        .header-underline {
+            height: 5px;
+            width: 80px;
+            background-color: #4CAF50;
+            margin-top: 12px;
+            margin-bottom: 32px;
+        }
+        .comparison-box {
+            background-color: rgba(33, 150, 243, 0.1);
+            border-left: 4px solid #2196F3;
+            padding: 18px;
+            margin-bottom: 22px;
+            border-radius: 0 4px 4px 0;
+        }
+        .result-box {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid #4CAF50;
+            padding: 18px;
+            margin-bottom: 22px;
+            border-radius: 0 4px 4px 0;
+        }
+        h1 {
+            font-size: 48px !important;
+        }
+        h2 {
+            font-size: 32px !important;
+            margin-bottom: 24px !important;
+        }
+        p {
+            font-size: 28px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container flex flex-col">
+<!-- Header -->
+<div class="px-16 pt-12 pb-4">
+<h1 class="font-bold blue-accent">語音品質優化實測</h1>
+<div class="header-underline"></div>
+</div>
+<!-- Main content - Two columns -->
+<div class="flex flex-1 px-16 pb-16">
+<!-- Left column -->
+<div class="w-1/2 pr-8 content-area">
+<h2 class="font-semibold green-accent">A/B 測試設計</h2>
+<div class="list-item">
+<i class="fas fa-flask list-icon blue-accent"></i>
+<p>對象：原始 Google TTS vs FFmpeg 增強版本</p>
+</div>
+<div class="list-item">
+<i class="fas fa-volume-up list-icon blue-accent"></i>
+<p>音量：原始 vs 增益(+13dB) + 動態範圍壓縮</p>
+</div>
+<div class="comparison-box">
+<p class="mb-3 font-semibold blue-accent">測試環境</p>
+<p>模擬義診中心噪音環境（約 65-70dB）</p>
+<p>視障志願者參與評估（15位）</p>
+<p>測試距離：2-10公尺不等</p>
+</div>
+<div class="list-item">
+<i class="fas fa-sliders-h list-icon blue-accent"></i>
+<p>測試變量：音量、清晰度、節奏感、可懂度</p>
+</div>
+</div>
+<!-- Right column -->
+<div class="w-1/2 pl-8 content-area">
+<h2 class="font-semibold green-accent">測試結果與結論</h2>
+<div class="list-item">
+<i class="fas fa-chart-bar list-icon green-accent"></i>
+<p>可懂度：增強版本提升 67% 辨識正確率</p>
+</div>
+<div class="list-item">
+<i class="fas fa-wave-square list-icon green-accent"></i>
+<p>節奏：Ding-Dong + 停頓 提升 89% 注意力</p>
+</div>
+<div class="result-box">
+<p class="mb-3 font-semibold green-accent">關鍵優化點</p>
+<p>1. 增益優化：+13dB 避免削波的最佳點</p>
+<p>2. 節奏設計：1s鈴聲 + 0.5s停頓 + 語音</p>
+<p>3. 語速調整：0.95x 提高辨識率</p>
+</div>
+<div class="list-item">
+<i class="fas fa-check-circle list-icon green-accent"></i>
+<p>結論：增益+節奏優化顯著提升噪音環境中的語音辨識度，尤其對視障患者</p>
+</div>
+</div>
+</div>
+<!-- Decorative elements -->
+<div class="circuit-line" style="top: 150px; right: 80px; width: 200px; transform: rotate(-30deg);"></div>
+<div class="circuit-line" style="bottom: 100px; left: 150px; width: 250px; transform: rotate(15deg);"></div>
+<div class="tech-dot" style="top: 200px; left: 300px;"></div>
+<div class="tech-dot" style="bottom: 250px; right: 200px;"></div>
+<div class="tech-dot" style="top: 120px; right: 350px;"></div>
+<!-- Watermark -->
+<div class="watermark">
+            Licensed to MOPCON 2025
+        </div>
+</div>
+</body>
+</html>

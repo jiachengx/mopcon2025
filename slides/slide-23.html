@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Fully Kiosk Browser 遠端API示例</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/themes/prism-tomorrow.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0a1929;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .blue-accent {
+            color: #2196F3;
+        }
+        .green-accent {
+            color: #4CAF50;
+        }
+        .content-area {
+            z-index: 5;
+        }
+        .circuit-line {
+            position: absolute;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+        .tech-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            z-index: 1;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 14px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+        .header-underline {
+            height: 6px;
+            width: 80px;
+            background-color: #4CAF50;
+            margin-top: 12px;
+            margin-bottom: 32px;
+        }
+        .code-container {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 24px;
+            line-height: 1.4;
+            overflow: hidden;
+        }
+        .code-highlight {
+            color: #2196F3;
+        }
+        .code-comment {
+            color: #8f9ba8;
+            font-size: 22px;
+        }
+        .note-item {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left: 6px solid #4CAF50;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+            border-radius: 0 4px 4px 0;
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+        .note-title {
+            font-weight: 600;
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #4CAF50;
+        }
+        .note-content {
+            font-size: 20px;
+            line-height: 1.4;
+        }
+        .api-function {
+            margin-bottom: 22px;
+            padding: 4px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container flex flex-col">
+<!-- Header -->
+<div class="px-16 pt-14 pb-6">
+<h1 class="text-5xl font-bold blue-accent">Fully Kiosk Browser 遠端API</h1>
+<div class="header-underline"></div>
+</div>
+<!-- Main content - Two columns -->
+<div class="flex flex-1 px-16 pb-16">
+<!-- Left column - Code -->
+<div class="w-1/2 pr-8 content-area">
+<div class="code-container h-full flex flex-col">
+<pre class="flex-1 text-gray-200">
+<span class="code-comment">// 核心API功能展示</span>
+
+<div class="api-function">
+<span class="code-highlight">// 設定URL - 更改頁面顯示</span>
+<span class="code-highlight">function</span> <span class="green-accent">setStartUrl</span>(deviceId, newUrl) {
+    <span class="code-highlight">return</span> sendCommand(deviceId, 'setStartUrl', {
+        url: newUrl
+    });
+}
+</div>
+
+<div class="api-function">
+<span class="code-highlight">// 重啟應用 - 解決顯示問題</span>
+<span class="code-highlight">function</span> <span class="green-accent">restartApp</span>(deviceId) {
+    <span class="code-highlight">return</span> sendCommand(deviceId, 'restartApp');
+}
+</div>
+
+<div class="api-function">
+<span class="code-highlight">// 設定音量 - 控制播放聲音</span>
+<span class="code-highlight">function</span> <span class="green-accent">setVolume</span>(deviceId, level) {
+    <span class="code-highlight">return</span> sendCommand(deviceId, 'setVolume', {
+        level: level  <span class="code-comment">// 0-100</span>
+    });
+}
+</div>
+
+<div class="api-function">
+<span class="code-highlight">// 前台一鍵控制範例</span>
+<span class="green-accent">controlAllDevices</span>('restartApp')
+    .then(result =&gt; {
+        console.log(`成功: ${result.success}`);
+    });
+</div>
+</pre>
+</div>
+</div>
+<!-- Right column - Notes -->
+<div class="w-1/2 pl-8 content-area">
+<h2 class="text-3xl font-semibold mb-6 green-accent">核心遠端控制功能</h2>
+<div class="note-item">
+<p class="note-title"><i class="fas fa-globe mr-2"></i>設定URL與頁面控制</p>
+<p class="note-content">遠端更改各裝置顯示頁面，確保每台設備顯示正確內容。</p>
+</div>
+<div class="note-item">
+<p class="note-title"><i class="fas fa-sync-alt mr-2"></i>遠端重啟管理</p>
+<p class="note-content">無需人工操作即可遠端重啟應用，解決凍結問題，提高穩定性。</p>
+</div>
+<div class="note-item">
+<p class="note-title"><i class="fas fa-volume-up mr-2"></i>音量精確控制</p>
+<p class="note-content">控制各裝置音量，大廳TV播音、診間外看板靜音，提升病患體驗。</p>
+</div>
+<div class="mt-8">
+<h3 class="text-2xl font-medium blue-accent mb-5"><i class="fas fa-server mr-2"></i>42台設備集中管理</h3>
+<p class="text-xl mb-4">• <span class="font-medium">一鍵控制</span>：刷新、靜音、重啟</p>
+<p class="text-xl mb-4">• <span class="font-medium">分組操作</span>：診間、廣告屏、TV</p>
+<p class="text-xl">• <span class="font-medium">自動恢復</span>：偵測並修復離線設備</p>
+</div>
+</div>
+</div>
+<!-- Decorative elements -->
+<div class="circuit-line" style="top: 120px; right: 100px; width: 180px; transform: rotate(-30deg);"></div>
+<div class="circuit-line" style="bottom: 120px; left: 80px; width: 220px; transform: rotate(15deg);"></div>
+<div class="tech-dot" style="top: 180px; left: 150px;"></div>
+<div class="tech-dot" style="bottom: 200px; right: 180px;"></div>
+<div class="tech-dot" style="top: 100px; right: 300px;"></div>
+<!-- Watermark -->
+<div class="watermark">
+        Licensed to MOPCON 2025
+    </div>
+</div>
+</body>
+</html>

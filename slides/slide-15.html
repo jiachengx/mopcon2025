@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI 語音系統架構</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.2.4/dist/mermaid.min.js"></script>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0a1929;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .blue-accent {
+            color: #2196F3;
+        }
+        .green-accent {
+            color: #4CAF50;
+        }
+        .content-area {
+            z-index: 5;
+        }
+        .circuit-line {
+            position: absolute;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+        .tech-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            z-index: 1;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 14px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+        .header-underline {
+            height: 4px;
+            width: 60px;
+            background-color: #4CAF50;
+            margin-top: 8px;
+            margin-bottom: 24px;
+        }
+        .diagram-container {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+            height: 480px;
+            display: flex;
+            flex-direction: column;
+        }
+        .mermaid {
+            background-color: rgba(10, 25, 41, 0.7);
+            flex: 1;
+        }
+        .diagram-notes {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid #4CAF50;
+            padding: 12px 16px;
+            margin-top: 12px;
+            border-radius: 0 4px 4px 0;
+        }
+    </style>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            mermaid.initialize({
+                theme: 'dark',
+                fontFamily: 'Noto Sans TC',
+                securityLevel: 'loose',
+                flowchart: {
+                    nodeSpacing: 20,
+                    rankSpacing: 40,
+                    curve: 'basis',
+                    useMaxWidth: true,
+                    htmlLabels: false
+                },
+                themeVariables: {
+                    primaryColor: '#2196F3',
+                    primaryTextColor: '#ffffff',
+                    primaryBorderColor: '#4CAF50',
+                    lineColor: '#ffffff',
+                    secondaryColor: '#4CAF50',
+                    tertiaryColor: '#0a1929',
+                    fontSize: '16px'
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="slide-container flex flex-col">
+<!-- Header -->
+<div class="px-16 pt-12 pb-4">
+<h1 class="text-4xl font-bold blue-accent">AI 語音系統架構</h1>
+<div class="header-underline"></div>
+</div>
+<!-- Main content - Diagram -->
+<div class="flex-1 px-16 pb-8 content-area">
+<div class="diagram-container">
+<pre class="mermaid text-center">
+flowchart LR
+    Init["初始化階段\n(可連網) 📡"] --&gt; GoogleTTS["Google TTS\n語音生成 🎤"]
+    GoogleTTS --&gt; FFmpeg["FFmpeg 增強\n(+13dB) 🔊"]
+    FFmpeg --&gt; Library["70個永久片段\n音訊庫 💾"]
+    
+    Library --&gt; Runtime["執行時合成\n/快取 ⚙️"]
+    Runtime --&gt; TVPlay["TV播放\n(大廳3台) 📺"]
+    
+    subgraph 預處理階段
+        Init
+        GoogleTTS
+        FFmpeg
+        Library
+    end
+    
+    subgraph 運行階段
+        Runtime
+        TVPlay
+    end
+    
+    classDef online fill:#2196F3,stroke:#4CAF50,color:#fff
+    classDef offline fill:#4CAF50,stroke:#2196F3,color:#fff
+    classDef library fill:#0a1929,stroke:#4CAF50,color:#fff
+    
+    class Init,GoogleTTS online
+    class Runtime,TVPlay offline
+    class Library,FFmpeg library
+</pre>
+<div class="diagram-notes">
+<p class="text-lg"><i class="fas fa-info-circle mr-2 blue-accent"></i> <span class="green-accent font-medium">離線優先設計</span>：初始化時生成所有語音片段，執行階段完全離線運作</p>
+<p class="text-lg mt-2"><i class="fas fa-exchange-alt mr-2 blue-accent"></i> <span class="green-accent font-medium">音訊優化</span>：FFmpeg處理增強音量(+13dB)、Ding-Dong增益(+16dB)，確保大廳環境清晰可聽</p>
+</div>
+</div>
+</div>
+<!-- Decorative elements -->
+<div class="circuit-line" style="top: 120px; right: 100px; width: 180px; transform: rotate(-30deg);"></div>
+<div class="circuit-line" style="bottom: 120px; left: 80px; width: 220px; transform: rotate(15deg);"></div>
+<div class="tech-dot" style="top: 180px; left: 150px;"></div>
+<div class="tech-dot" style="bottom: 200px; right: 180px;"></div>
+<div class="tech-dot" style="top: 100px; right: 300px;"></div>
+<!-- Watermark -->
+<div class="watermark">
+        Licensed to MOPCON 2025
+    </div>
+</div>
+</body>
+</html>

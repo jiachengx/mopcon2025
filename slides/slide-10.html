@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>資料持久化：Redis + JSON</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0a1929;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .blue-accent {
+            color: #2196F3;
+        }
+        .green-accent {
+            color: #4CAF50;
+        }
+        .content-area {
+            z-index: 5;
+        }
+        .list-item {
+            margin-bottom: 22px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .list-icon {
+            margin-right: 16px;
+            margin-top: 6px;
+            font-size: 24px;
+        }
+        .circuit-line {
+            position: absolute;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+        .tech-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            z-index: 1;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 16px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+        .header-underline {
+            height: 5px;
+            width: 80px;
+            background-color: #4CAF50;
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 48px !important;
+            font-weight: bold;
+        }
+        h2 {
+            font-size: 36px !important;
+            margin-bottom: 24px !important;
+            font-weight: 600;
+        }
+        p {
+            font-size: 28px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container flex flex-col">
+<!-- Header -->
+<div class="px-16 pt-12 pb-4">
+<h1 class="blue-accent">資料持久化：Redis + JSON</h1>
+<div class="header-underline"></div>
+</div>
+<!-- Main content - Two columns -->
+<div class="flex flex-1 px-16 pb-16">
+<!-- Left column -->
+<div class="w-1/2 pr-8 content-area">
+<h2 class="green-accent">即時態：Redis</h2>
+<div class="list-item">
+<i class="fas fa-database list-icon blue-accent"></i>
+<p>RDB快照：每15分鐘或1萬次變更自動備份</p>
+</div>
+<div class="list-item">
+<i class="fas fa-bolt list-icon blue-accent"></i>
+<p>記憶體優先：全部即時資料存於記憶體中</p>
+</div>
+<div class="list-item">
+<i class="fas fa-shield-alt list-icon blue-accent"></i>
+<p>風險控制：最多損失15分鐘資料（可接受）</p>
+</div>
+<div class="list-item">
+<i class="fas fa-sync-alt list-icon blue-accent"></i>
+<p>快速恢復：啟動自動載入最新RDB快照</p>
+</div>
+</div>
+<!-- Right column -->
+<div class="w-1/2 pl-8 content-area">
+<h2 class="green-accent">永久態：JSON + 日誌</h2>
+<div class="list-item">
+<i class="fas fa-file-code list-icon green-accent"></i>
+<p>配置檔：採用JSON格式，原子性寫入防損壞</p>
+</div>
+<div class="list-item">
+<i class="fas fa-chart-line list-icon green-accent"></i>
+<p>統計輸出：每5分鐘將統計數據寫入JSON</p>
+</div>
+<div class="list-item">
+<i class="fas fa-clipboard-list list-icon green-accent"></i>
+<p>事件日誌：關鍵事件即時append寫入log</p>
+</div>
+<div class="list-item">
+<i class="fas fa-hdd list-icon green-accent"></i>
+<p>跨日清空：日期比對自動歸檔前日資料</p>
+</div>
+</div>
+</div>
+<!-- Decorative elements -->
+<div class="circuit-line" style="top: 150px; right: 80px; width: 200px; transform: rotate(-30deg);"></div>
+<div class="circuit-line" style="bottom: 100px; left: 150px; width: 250px; transform: rotate(15deg);"></div>
+<div class="tech-dot" style="top: 200px; left: 300px;"></div>
+<div class="tech-dot" style="bottom: 250px; right: 200px;"></div>
+<div class="tech-dot" style="top: 120px; right: 350px;"></div>
+<!-- Watermark -->
+<div class="watermark">
+            Licensed to MOPCON 2025
+        </div>
+</div>
+</body>
+</html>

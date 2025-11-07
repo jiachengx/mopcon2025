@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>音訊快取策略</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        font-family: 'Noto Sans TC', sans-serif;
+    }
+    .slide-container {
+        width: 1280px;
+        height: 720px;
+        background-color: #0a1929;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+    .blue-accent {
+        color: #2196F3;
+    }
+    .green-accent {
+        color: #4CAF50;
+    }
+    .table-header {
+        background-color: rgba(33, 150, 243, 0.2);
+        border-bottom: 2px solid #2196F3;
+    }
+    .table-row:nth-child(odd) {
+        background-color: rgba(255, 255, 255, 0.03);
+    }
+    .table-row:nth-child(even) {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+    .table-row:hover {
+        background-color: rgba(33, 150, 243, 0.1);
+    }
+    .table-cell {
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        vertical-align: top;
+    }
+    .table-container {
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid rgba(33, 150, 243, 0.3);
+    }
+    .circuit-line {
+        position: absolute;
+        border: 1px solid rgba(33, 150, 243, 0.2);
+        z-index: 1;
+    }
+    .tech-dot {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: #2196F3;
+        z-index: 1;
+    }
+    .watermark {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        font-size: 14px;
+        opacity: 0.7;
+        color: rgba(255, 255, 255, 0.7);
+        z-index: 10;
+    }
+    .header-underline {
+        height: 6px;
+        width: 80px;
+        background-color: #4CAF50;
+        margin-top: 12px;
+        margin-bottom: 20px;
+    }
+    .table-footer {
+        background-color: rgba(76, 175, 80, 0.1);
+        border-top: 2px solid #4CAF50;
+        font-weight: 500;
+    }
+    .main-title {
+        font-size: 48px;
+        font-weight: 700;
+        margin: 0;
+    }
+    .table-header-text {
+        font-size: 26px;
+        line-height: 1.2;
+        margin: 0;
+    }
+    .strategy-title {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        margin-top: 0;
+    }
+    .strategy-desc {
+        font-size: 20px;
+        line-height: 1.3;
+        margin: 0;
+        opacity: 0.9;
+    }
+    .point-text {
+        font-size: 20px;
+        line-height: 1.5;
+        margin: 6px 0;
+    }
+    .note-text {
+        font-size: 20px;
+        line-height: 1.4;
+        margin: 6px 0;
+    }
+    .table-content-text {
+        font-size: 22px;
+        line-height: 1.3;
+        margin: 0;
+    }
+    .notes-container {
+        margin-top: 16px;
+        background-color: rgba(76, 175, 80, 0.05);
+        padding: 12px 16px;
+        border-radius: 8px;
+        border-left: 4px solid #4CAF50;
+    }
+</style>
+</head>
+<body>
+<div class="slide-container">
+    <!-- Header -->
+    <div style="padding: 40px 60px 0 60px;">
+        <h1 class="main-title blue-accent">音訊快取策略</h1>
+        <div class="header-underline"></div>
+    </div>
+    
+    <!-- Main content -->
+    <div style="flex: 1; padding: 0 60px 30px 60px; display: flex; flex-direction: column;">
+        <!-- Table -->
+        <div class="table-container">
+            <!-- Table header -->
+            <div style="display: flex;">
+                <div style="width: 33.33%;" class="table-cell table-header">
+                    <p class="table-header-text" style="text-align: center;">
+                        <i class="fas fa-code-branch mr-2 blue-accent"></i>策略
+                    </p>
+                </div>
+                <div style="width: 33.33%;" class="table-cell table-header">
+                    <p class="table-header-text" style="text-align: center;">
+                        <i class="fas fa-thumbs-up mr-2 blue-accent"></i>優點
+                    </p>
+                </div>
+                <div style="width: 33.33%;" class="table-cell table-header">
+                    <p class="table-header-text" style="text-align: center;">
+                        <i class="fas fa-exclamation-triangle mr-2 blue-accent"></i>風險
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Row 1: 預生成策略 -->
+            <div style="display: flex;" class="table-row">
+                <div style="width: 33.33%;" class="table-cell">
+                    <p class="strategy-title green-accent">預生成策略</p>
+                    <p class="strategy-desc">將所有可能音訊事先產生</p>
+                </div>
+                <div style="width: 33.33%;" class="table-cell">
+                    <p class="point-text"><i class="fas fa-bolt mr-2 blue-accent"></i>極低延遲</p>
+                    <p class="point-text"><i class="fas fa-check mr-2 blue-accent"></i>無需即時處理</p>
+                    <p class="point-text"><i class="fas fa-check mr-2 blue-accent"></i>負載穩定</p>
+                </div>
+                <div style="width: 33.33%;" class="table-cell">
+                    <p class="point-text"><i class="fas fa-hdd mr-2 blue-accent"></i>大量磁碟空間</p>
+                    <p class="point-text"><i class="fas fa-memory mr-2 blue-accent"></i>記憶體佔用高</p>
+                    <p class="point-text"><i class="fas fa-cogs mr-2 blue-accent"></i>更改需重新生成</p>
+                </div>
+            </div>
+            
+            <!-- Row 2: 即時合併策略 -->
+            <div style="display: flex;" class="table-row">
+                <div style="width: 33.33%;" class="table-cell">
+                    <p class="strategy-title green-accent">即時合併策略</p>
+                    <p class="strategy-desc">叫號時才合併音訊片段</p>
+                </div>
+                <div style="width: 33.33%;" class="table-cell">
+                    <p class="point-text"><i class="fas fa-recycle mr-2 blue-accent"></i>極高彈性</p>
+                    <p class="point-text"><i class="fas fa-hdd mr-2 blue-accent"></i>最小存儲需求</p>
+                    <p class="point-text"><i class="fas fa-cogs mr-2 blue-accent"></i>易於更新片段</p>
+                </div>
+                <div style="width: 33.33%;" class="table-cell">
+                    <p class="point-text"><i class="fas fa-tachometer-alt mr-2 blue-accent"></i>高峰期延遲</p>
+                    <p class="point-text"><i class="fas fa-microchip mr-2 blue-accent"></i>CPU使用率不穩</p>
+                    <p class="point-text"><i class="fas fa-exclamation-circle mr-2 blue-accent"></i>潛在排隊風險</p>
+                </div>
+            </div>
+            
+            <!-- Row 3: 混合策略 -->
+            <div style="display: flex;" class="table-row">
+                <div style="width: 33.33%;" class="table-cell">
+                    <p class="strategy-title green-accent">混合策略</p>
+                    <p class="strategy-desc">熱門預生成+冷組合即時合併</p>
+                </div>
+                <div style="width: 33.33%;" class="table-cell">
+                    <p class="point-text"><i class="fas fa-balance-scale mr-2 blue-accent"></i>兼顧彈性與效能</p>
+                    <p class="point-text"><i class="fas fa-chart-line mr-2 blue-accent"></i>80/20法則效益</p>
+                    <p class="point-text"><i class="fas fa-shield-alt mr-2 blue-accent"></i>高峰期有保障</p>
+                </div>
+                <div style="width: 33.33%;" class="table-cell">
+                    <p class="point-text"><i class="fas fa-sliders-h mr-2 blue-accent"></i>需調整熱度參數</p>
+                    <p class="point-text"><i class="fas fa-code mr-2 blue-accent"></i>實作較複雜</p>
+                    <p class="point-text"><i class="fas fa-sync mr-2 blue-accent"></i>需定期重新評估</p>
+                </div>
+            </div>
+            
+            <!-- Table footer -->
+            <div style="display: flex;" class="table-footer">
+                <div style="width: 33.33%;" class="table-cell">
+                    <p class="table-content-text"><i class="fas fa-star mr-2"></i>本案採用</p>
+                </div>
+                <div style="width: 66.67%;" class="table-cell">
+                    <p class="table-content-text">混合策略 + LRU快取：預生成熱門房號/常用數字</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Notes -->
+        <div class="notes-container">
+            <p class="note-text">
+                <i class="fas fa-lightbulb mr-2 blue-accent"></i>
+                <span class="green-accent" style="font-weight: 600;">效能分析</span>：80%叫號集中在20%號碼組合，預快取可覆蓋大部分場景
+            </p>
+            <p class="note-text">
+                <i class="fas fa-chart-pie mr-2 blue-accent"></i>
+                <span class="green-accent" style="font-weight: 600;">儲存影響</span>：混合策略僅佔用純預生成方案5-10%的存儲空間
+            </p>
+        </div>
+    </div>
+    
+    <!-- Decorative elements -->
+    <div class="circuit-line" style="top: 140px; right: 120px; width: 200px; transform: rotate(-20deg);"></div>
+    <div class="circuit-line" style="bottom: 100px; left: 150px; width: 180px; transform: rotate(10deg);"></div>
+    <div class="tech-dot" style="top: 180px; left: 300px;"></div>
+    <div class="tech-dot" style="bottom: 220px; right: 280px;"></div>
+    <div class="tech-dot" style="top: 120px; right: 320px;"></div>
+    
+    <!-- Watermark -->
+    <div class="watermark">Licensed to MOPCON 2025</div>
+</div>
+</body>
+</html>

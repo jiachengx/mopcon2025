@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>數字拆解演算法</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/themes/prism-tomorrow.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0a1929;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .blue-accent {
+            color: #2196F3;
+        }
+        .green-accent {
+            color: #4CAF50;
+        }
+        .content-area {
+            z-index: 5;
+        }
+        .circuit-line {
+            position: absolute;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+        .tech-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            z-index: 1;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 14px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+        .header-underline {
+            height: 4px;
+            width: 80px;
+            background-color: #4CAF50;
+            margin-top: 12px;
+            margin-bottom: 30px;
+        }
+        .code-container {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 20px;
+            overflow: hidden;
+            line-height: 1.5;
+        }
+        .code-highlight {
+            color: #2196F3;
+        }
+        .code-comment {
+            color: #6c757d;
+        }
+        .note-item {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left: 6px solid #4CAF50;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+            border-radius: 0 6px 6px 0;
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+        .note-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #4CAF50;
+            font-size: 30px;
+        }
+        .note-text {
+            font-size: 28px;
+            line-height: 1.4;
+        }
+        .performance-text {
+            font-size: 28px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container flex flex-col">
+<!-- Header -->
+<div class="px-16 pt-12 pb-4">
+<h1 class="text-5xl font-bold blue-accent">數字拆解演算法</h1>
+<div class="header-underline"></div>
+</div>
+<!-- Main content - Two columns -->
+<div class="flex flex-1 px-16 pb-16">
+<!-- Left column - Code -->
+<div class="w-1/2 pr-8 content-area">
+<div class="code-container h-full flex flex-col">
+<pre class="flex-1 text-gray-200">
+<span class="code-highlight">def</span> <span class="green-accent">number_to_audio</span>(number):
+    <span class="code-comment"># 數字範圍：1-9999</span>
+    
+    <span class="code-highlight">if</span> number &lt; 0 or number &gt; 9999:
+        <span class="code-highlight">raise</span> ValueError("數字必須介於1-9999之間")
+    
+    <span class="code-comment"># 結果存放</span>
+    result = []
+    
+    <span class="code-comment"># 處理千位</span>
+    thousands = number // 1000
+    <span class="code-highlight">if</span> thousands &gt; 0:
+        result.append(f"numbers/{thousands}")
+        result.append("numbers/thousand")
+        
+    <span class="code-comment"># 處理百位</span>
+    hundreds = (number % 1000) // 100
+    <span class="code-highlight">if</span> hundreds &gt; 0:
+        result.append(f"numbers/{hundreds}")
+        result.append("numbers/hundred")
+        
+    <span class="code-comment"># 處理十位與個位</span>
+    remainder = number % 100
+    
+    <span class="code-comment"># 特殊處理：10-19</span>
+    <span class="code-highlight">if</span> 10 &lt;= remainder &lt;= 19:
+        result.append(f"numbers/{remainder}")
+    <span class="code-highlight">else</span>:
+        <span class="code-comment"># 處理十位</span>
+        tens = remainder // 10
+        <span class="code-highlight">if</span> tens &gt; 0:
+            result.append(f"numbers/{tens}0")
+            
+        <span class="code-comment"># 處理個位</span>
+        units = remainder % 10
+        <span class="code-highlight">if</span> units &gt; 0:
+            result.append(f"numbers/{units}")
+            
+    <span class="code-highlight">return</span> result
+
+<span class="code-comment"># 使用範例</span>
+<span class="code-highlight">print</span>(number_to_audio(1234))  
+<span class="code-comment"># ['numbers/1', 'numbers/thousand', 'numbers/2',
+# 'numbers/hundred', 'numbers/30', 'numbers/4']</span>
+</pre>
+</div>
+</div>
+<!-- Right column - Notes -->
+<div class="w-1/2 pl-8 content-area">
+<h2 class="text-2xl font-semibold mb-6 green-accent">數字拆解邏輯說明</h2>
+<div class="note-item">
+<p class="note-title"><i class="fas fa-puzzle-piece mr-2"></i>拆解策略</p>
+<p class="note-text">將1-9999的數字拆解為獨立音訊片段，便於重組</p>
+</div>
+<div class="note-item">
+<p class="note-title"><i class="fas fa-language mr-2"></i>語言適應</p>
+<p class="note-text">演算法支援多語言擴展，可匹配不同語音習慣</p>
+</div>
+<div class="note-item">
+<p class="note-title"><i class="fas fa-layer-group mr-2"></i>特殊處理</p>
+<p class="note-text">10-19數字特殊處理，避免「十三」變成「一十三」</p>
+</div>
+<div class="note-item">
+<p class="note-title"><i class="fas fa-wave-square mr-2"></i>零值處理</p>
+<p class="note-text">智能跳過零值位數，確保自然發音</p>
+</div>
+<div class="mt-8">
+<h3 class="text-2xl font-medium blue-accent mb-4"><i class="fas fa-chart-line mr-2"></i>效能分析</h3>
+<p class="performance-text">• 時間複雜度：O(1)，固定計算量</p>
+<p class="performance-text">• 空間複雜度：O(log n)，與數字位數相關</p>
+<p class="performance-text">• 平均執行時間：&lt; 0.05ms</p>
+<p class="performance-text">• 支援4位數擴展到5位數：僅需3行代碼</p>
+</div>
+</div>
+</div>
+<!-- Decorative elements -->
+<div class="circuit-line" style="top: 120px; right: 100px; width: 180px; transform: rotate(-30deg);"></div>
+<div class="circuit-line" style="bottom: 120px; left: 80px; width: 220px; transform: rotate(15deg);"></div>
+<div class="tech-dot" style="top: 180px; left: 150px;"></div>
+<div class="tech-dot" style="bottom: 200px; right: 180px;"></div>
+<div class="tech-dot" style="top: 100px; right: 300px;"></div>
+<!-- Watermark -->
+<div class="watermark">
+        Licensed to MOPCON 2025
+    </div>
+</div>
+</body>
+</html>

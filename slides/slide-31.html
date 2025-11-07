@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>踩坑與教訓</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #0a1929;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .blue-accent {
+            color: #2196F3;
+        }
+        .green-accent {
+            color: #4CAF50;
+        }
+        .content-area {
+            z-index: 5;
+        }
+        .list-item {
+            margin-bottom: 32px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .list-icon {
+            margin-right: 16px;
+            margin-top: 6px;
+            font-size: 28px;
+        }
+        .circuit-line {
+            position: absolute;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+        .tech-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            z-index: 1;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 16px;
+            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+        }
+        .header-underline {
+            height: 5px;
+            width: 80px;
+            background-color: #4CAF50;
+            margin-top: 12px;
+            margin-bottom: 32px;
+        }
+        .problem {
+            color: #ff5252;
+            font-weight: 500;
+        }
+        .solution {
+            color: #4CAF50;
+            font-weight: 500;
+        }
+        .arrow-icon {
+            color: #2196F3;
+            margin: 0 12px;
+            font-size: 24px;
+        }
+        h1 {
+            font-size: 48px !important;
+            line-height: 1.2;
+        }
+        h2 {
+            font-size: 36px !important;
+            margin-bottom: 24px !important;
+        }
+        p {
+            font-size: 28px !important;
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+        .detail-text {
+            font-size: 26px !important;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container flex flex-col">
+<!-- Header -->
+<div class="px-16 pt-12 pb-4">
+<h1 class="font-bold blue-accent">踩坑與教訓</h1>
+<div class="header-underline"></div>
+</div>
+<!-- Main content - Two columns -->
+<div class="flex flex-1 px-16 pb-16">
+<!-- Left column -->
+<div class="w-1/2 pr-8 content-area">
+<h2 class="font-semibold green-accent">資料與通訊挑戰</h2>
+<div class="list-item">
+<i class="fas fa-database list-icon blue-accent"></i>
+<div>
+<p><span class="problem">SQLite寫入鎖問題</span> <i class="fas fa-arrow-right arrow-icon"></i> <span class="solution">Redis + JSON分離</span></p>
+<p class="detail-text">寫入競爭導致表鎖定，阻塞診間操作</p>
+<p class="detail-text">解決：即時資料用Redis，配置用JSON原子寫入</p>
+</div>
+</div>
+<div class="list-item">
+<i class="fas fa-broadcast-tower list-icon blue-accent"></i>
+<div>
+<p><span class="problem">WebSocket廣播風暴</span> <i class="fas fa-arrow-right arrow-icon"></i> <span class="solution">Topic精準 + Room分組</span></p>
+<p class="detail-text">全廣播造成42台設備網路風暴，資源耗盡</p>
+<p class="detail-text">解決：MQTT Topic精確訂閱，WebSocket Room分組</p>
+</div>
+</div>
+</div>
+<!-- Right column -->
+<div class="w-1/2 pl-8 content-area">
+<h2 class="font-semibold green-accent">環境與UI挑戰</h2>
+<div class="list-item">
+<i class="fas fa-bolt list-icon blue-accent"></i>
+<div>
+<p><span class="problem">停電資料遺失</span> <i class="fas fa-arrow-right arrow-icon"></i> <span class="solution">RDB快照 + 即時日誌</span></p>
+<p class="detail-text">當地環境易斷電，資料隨機損毀</p>
+<p class="detail-text">解決：Redis定期RDB快照(15分鐘)，關鍵事件即時寫入</p>
+</div>
+</div>
+<div class="list-item">
+<i class="fas fa-mobile-alt list-icon blue-accent"></i>
+<div>
+<p><span class="problem">看板旋轉問題</span> <i class="fas fa-arrow-right arrow-icon"></i> <span class="solution">原生Portrait重繪</span></p>
+<p class="detail-text">Toybox TV無法旋轉，CSS transform造成鋸齒與觸控錯位</p>
+<p class="detail-text">解決：原生直立模式重新設計，Canvas/Grid優化</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative elements -->
+<div class="circuit-line" style="top: 150px; right: 80px; width: 200px; transform: rotate(-30deg);"></div>
+<div class="circuit-line" style="bottom: 100px; left: 150px; width: 250px; transform: rotate(15deg);"></div>
+<div class="tech-dot" style="top: 200px; left: 300px;"></div>
+<div class="tech-dot" style="bottom: 250px; right: 200px;"></div>
+<div class="tech-dot" style="top: 120px; right: 350px;"></div>
+<!-- Watermark -->
+<div class="watermark">
+            Licensed to MOPCON 2025
+        </div>
+</div>
+</body>
+</html>
