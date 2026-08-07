@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>COSCUP 2026 OBS 設定產生器</title>
+<style>
+body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;max-width:760px;margin:auto;padding:24px;line-height:1.6}
+.card{border:1px solid #bbb;border-radius:12px;padding:18px;margin:16px 0}
+select,button{font:inherit;padding:12px;width:100%;box-sizing:border-box;margin:.4rem 0}
+button{cursor:pointer;font-weight:700}
+small{opacity:.7}
+</style>
+</head>
+<body>
+<h1>COSCUP 2026 OBS 設定產生器</h1>
+<p>選 Room → 直接下載對應 OBS service.json，不需要再輸入 Stream Key。</p>
+<div class="card">
+  <label for="room"><strong>Room</strong></label>
+  <select id="room"></select>
+  <p id="info"></p>
+  <button id="download">下載 OBS service.json</button>
+</div>
+<div class="card">
+<small>本頁已內建 PDF 中所有 Room 對應的 Stream Key。若部署到公開 Cloudflare Pages，Key 也會存在公開前端原始碼中。</small>
+</div>
+<script>
+const ROOMS = {"209": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "mj7m-fp1c-ddk2-3v4y-5r4d", "youtubeUrl": "https://www.youtube.com/watch?v=x2B_oQFE0wA"}, "210": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "5tyd-3r39-61fu-9hp9-5upu", "youtubeUrl": "https://www.youtube.com/watch?v=jVrl-xnyjjw"}, "211": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "pt7a-3taz-5j0t-8xmu-822u", "youtubeUrl": "https://www.youtube.com/watch?v=zkUZboPK7Po"}, "212": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "dyww-zqu8-aduw-z6uf-4ya4", "youtubeUrl": "https://www.youtube.com/watch?v=NOyJCMixLiw"}, "213": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "1690-vs4v-xa01-mxkm-130b", "youtubeUrl": "https://www.youtube.com/watch?v=Zlbz7vEOLCU"}, "214": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "3md4-ppmc-h1vh-k57v-bacr", "youtubeUrl": "https://www.youtube.com/watch?v=4Qn6msS8Lnk"}, "311": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "pr26-38mr-vecy-22ag-8f3w", "youtubeUrl": "https://www.youtube.com/watch?v=jg0Glj_rRmE"}, "313": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "y1z3-aa55-e6z2-zkts-8fg4", "youtubeUrl": "https://www.youtube.com/watch?v=lbl814z5tes"}, "409-2": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "qbk9-gda6-tucu-1zub-7tz4", "youtubeUrl": "https://www.youtube.com/watch?v=O0sk4XWr5mA"}, "410": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "v52a-kk3q-f6s7-7pb6-9fd3", "youtubeUrl": "https://www.youtube.com/watch?v=ZKP5_OKWbCE"}, "411": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "dptx-hy44-ybgj-ypb4-bkes", "youtubeUrl": "https://www.youtube.com/watch?v=HwUYvtEO6-M"}, "412-1": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "4pt3-5bg1-prqy-p01y-b2d1", "youtubeUrl": "https://www.youtube.com/watch?v=tJ_e5G4Dd-o"}, "412-2": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "et0k-fjhk-9cwj-ve9q-dh1c", "youtubeUrl": "https://www.youtube.com/watch?v=xGiJ0fsXMME"}, "509": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "cv60-10dm-4kr2-agj6-edra", "youtubeUrl": "https://www.youtube.com/watch?v=e4UVuza9GsU"}, "510": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "8aqp-0h5a-ga8q-h6fk-1ezm", "youtubeUrl": "https://www.youtube.com/watch?v=AXbJp8fvg1o"}, "511": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "gghv-qzwv-fftx-y18p-0z8u", "youtubeUrl": "https://www.youtube.com/watch?v=aF7cwi-RbE4"}, "512": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "xc4c-x76m-1rtb-p2j1-c8cf", "youtubeUrl": "https://www.youtube.com/watch?v=2Y3asiO4LLA"}, "513": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "uma7-dpcy-hm86-3dzh-39qm", "youtubeUrl": "https://www.youtube.com/watch?v=KnvEWMdQXJ4"}, "514": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "tyy1-m08y-h76j-mgas-ck6t", "youtubeUrl": "https://www.youtube.com/watch?v=u5OIbtqf12I"}, "515": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "0p5q-938h-b1sg-azx6-02g1", "youtubeUrl": "https://www.youtube.com/watch?v=bRdBB3J9Bds"}, "RB101": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "6qjm-ugtf-xmek-zr7h-0fbf", "youtubeUrl": "https://www.youtube.com/watch?v=l1K_78tBU1M"}, "RB102": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "9sb2-hhqg-x5cf-dfru-ee4m", "youtubeUrl": "https://www.youtube.com/watch?v=r561RSMYC2k"}, "RB105": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "a0m0-yu6w-fjee-5ey3-6q7x", "youtubeUrl": "https://www.youtube.com/watch?v=2kcoK3FkGI8"}, "AU": {"serverUrl": "rtmp://a.rtmp.youtube.com/live2", "backupServerUrl": "rtmp://b.rtmp.youtube.com/live2?backup=1", "streamKey": "aefv-uuey-9k0f-t01g-69ch", "youtubeUrl": "https://www.youtube.com/watch?v=It9Rc2ZdTtE"}};
+const room = document.getElementById("room");
+Object.keys(ROOMS).forEach(r => {
+  const o=document.createElement("option");
+  o.value=r;o.textContent=r;room.appendChild(o);
+});
+function refresh(){
+ const r=ROOMS[room.value];
+ document.getElementById("info").innerHTML = `YouTube：<a target="_blank" rel="noopener" href="${r.youtubeUrl}">${r.youtubeUrl}</a>`;
+}
+room.addEventListener("change",refresh);refresh();
+function saveJson(name,obj){
+ const blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json;charset=utf-8"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+document.getElementById("download").onclick=()=>{
+ const r=ROOMS[room.value];
+ saveJson("service.json",{
+   settings:{
+     bwtest:false,
+     key:r.streamKey,
+     server:r.serverUrl,
+     service:"YouTube - RTMPS"
+   },
+   type:"rtmp_common"
+ });
+};
+</script>
+</body>
+</html>
